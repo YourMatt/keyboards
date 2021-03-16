@@ -51,7 +51,10 @@
 
 #define RGB_DI_PIN F7
 #ifdef RGB_DI_PIN
-#define RGBLIGHT_ANIMATIONS
+// temporarily removing all animations to save on firmware size
+//#define RGBLIGHT_ANIMATIONS
+//#define RGBLIGHT_EFFECT_STATIC_GRADIENT
+//#define RGBLIGHT_EFFECT_RAINBOW_SWIRL
 #define RGBLED_NUM 18
 #define RGBLIGHT_HUE_STEP 8
 #define RGBLIGHT_SAT_STEP 8
@@ -60,5 +63,8 @@
 #define RGBLIGHT_LAYERS
 #define RGBLIGHT_LAYERS_OVERRIDE_RGB_OFF
 #define RGBLIGHT_LAYER_BLINK
+
+// may need following for setting macro record to also stop recording, but removed when running example code caused an error
+//#define DYNAMIC_MACRO_USER_CALL
 
 #endif

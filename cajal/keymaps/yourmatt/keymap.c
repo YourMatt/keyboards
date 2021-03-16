@@ -1,8 +1,36 @@
-/*
- * YourMatt: Cajal Mapping
- */
+/***********************************************************************************************************************
+*
+*   YOURMATT: Cajal Mapping
+*
+***********************************************************************************************************************/
 
 #include QMK_KEYBOARD_H
+
+/* TODO:
+    - Keymap
+        - Move DFU Reset
+        - Change RGB mode controls
+    - Macros
+        - Move to be under shift on layer 2 if tap - Keep shift if held
+        - Set record tap to stop record if already recording
+    - Underglow
+        - Set glow state for right-shift - Not working likely due to use MT with mod_rsft
+        - Add custom animation for RGB_TOG that dims LEDs under the arrows by 50%
+    - Layers
+        - Add a new layer that locks on a double-tap of Fn1 - Use this for special characters
+        - Consider application-specific shortcuts
+            - Excel
+                - Edit cell contents
+    - Encoder
+        - Decide what to do with it
+*/
+
+
+/***********************************************************************************************************************
+*
+*   KEYMAP
+*
+***********************************************************************************************************************/
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -33,103 +61,230 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-layer_state_t layer_state_set_user(layer_state_t state) {
-    switch (get_highest_layer(state)) {
-    case 1:
-        writePinHigh(B7);
-        writePinLow(B6);
 
-    	rgblight_set_layer_state(4, 1);
-        break;
-    case 2:
-        writePinLow(B7);
-        writePinHigh(B6);
-        break;
-    case 3:
-        writePinHigh(B7);
-        writePinHigh(B6);
-        break;
-    default:
-        writePinLow(B7);
-        writePinLow(B6);
-    	rgblight_set_layer_state(4, 0);
-        break;
+
+/***********************************************************************************************************************
+*
+*   CONSTANTS
+*
+***********************************************************************************************************************/
+
+const uint16_t PROGMEM GLOW_INDEX_MACRO1 = 0;
+const uint16_t PROGMEM GLOW_INDEX_MACRO2 = 1;
+const uint16_t PROGMEM GLOW_INDEX_FN1 = 2;
+const uint16_t PROGMEM GLOW_INDEX_FN2 = 3;
+const uint16_t PROGMEM GLOW_INDEX_CAPS = 4;
+const uint16_t PROGMEM GLOW_INDEX_SHIFT = 5;
+const uint16_t PROGMEM GLOW_INDEX_CTL = 6;
+const uint16_t PROGMEM GLOW_INDEX_RESET = 7;
+
+
+
+/***********************************************************************************************************************
+*
+*   LAYER STATE CHANGE HOOK
+*
+***********************************************************************************************************************/
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+
+    switch (get_highest_layer(state)) {
+
+        case 1:
+            writePinHigh(B7);
+            writePinLow(B6);
+            rgblight_set_layer_state(GLOW_INDEX_FN1, 1);
+            break;
+
+        case 2:
+            writePinLow(B7);
+            writePinHigh(B6);
+            rgblight_set_layer_state(GLOW_INDEX_FN2, 1);
+            break;
+
+        case 3:
+            writePinHigh(B7);
+            writePinHigh(B6);
+            rgblight_set_layer_state(GLOW_INDEX_FN1, 1);
+            rgblight_set_layer_state(GLOW_INDEX_FN2, 1);
+            break;
+
+        default:
+            writePinLow(B7);
+            writePinLow(B6);
+            rgblight_set_layer_state(GLOW_INDEX_FN1, 0);
+            rgblight_set_layer_state(GLOW_INDEX_FN2, 0);
+            break;
+
     }
+
     return state;
+
 }
+
+
+
+/***********************************************************************************************************************
+*
+*   LED STATE CHANGE HOOK
+*
+***********************************************************************************************************************/
 
 bool led_update_user(led_t led_state) {
+
     writePin(B5, led_state.caps_lock);
-
-    rgblight_set_layer_state(0, led_state.caps_lock);
-
-    //rgblight_sethsv_at(128, 128, 128, 4);
+    rgblight_set_layer_state(GLOW_INDEX_CAPS, led_state.caps_lock);
 
     return false;
+
 }
 
+
+
+/***********************************************************************************************************************
+*
+*   ROTARY ENCODER HOOK
+*
+***********************************************************************************************************************/
+
 void encoder_update_user(uint8_t index, bool clockwise) {
+
     if (index == 0) {
         if (clockwise) {
             tap_code(KC_VOLD);
-        } else {
+        }
+        else {
             tap_code(KC_VOLU);
         }
+    }
+
+}
+
+
+
+/***********************************************************************************************************************
+*
+*   UNDERGLOW
+*   Can define a max of 8 underglow layers
+*
+***********************************************************************************************************************/
+
+// caps lock
+const rgblight_segment_t PROGMEM glow_caps[] = RGBLIGHT_LAYER_SEGMENTS(
+	{2, 1, 127, 255, 128}, // dimmed light 2 because closer to edge of housing
+    {3, 5, 127, 255, 255}
+);
+// shift
+const rgblight_segment_t PROGMEM glow_shift[] = RGBLIGHT_LAYER_SEGMENTS(
+    {7, 1, 169, 255, 255},
+    {6, 1, 148, 255, 255}
+);
+// control
+const rgblight_segment_t PROGMEM glow_ctl[] = RGBLIGHT_LAYER_SEGMENTS(
+    {7, 1, 64, 255, 255},
+    {6, 1, 95, 255, 255}
+);
+// function 1 layer
+const rgblight_segment_t PROGMEM glow_layer_fn1[] = RGBLIGHT_LAYER_SEGMENTS(
+    {8, 3, 190, 255, 255}
+);
+//function 2 layer
+const rgblight_segment_t PROGMEM glow_layer_fn2[] = RGBLIGHT_LAYER_SEGMENTS(
+    {17, 1, 190, 255, 255},
+    {0, 1, 190, 255, 255},
+    {1, 1, 190, 255, 128} // dimmed light 1 because closer to edge of housing
+);
+// macro 1 recording
+const rgblight_segment_t PROGMEM glow_macro_rec_1[] = RGBLIGHT_LAYER_SEGMENTS(
+    {8, 3, 0, 255, 255}
+);
+// macro 2 recording
+const rgblight_segment_t PROGMEM glow_macro_rec_2[] = RGBLIGHT_LAYER_SEGMENTS(
+    {8, 3, 56, 255, 255}
+);
+// DFU mode
+const rgblight_segment_t PROGMEM glow_reset[] = RGBLIGHT_LAYER_SEGMENTS(
+	{2, 1, 0, 255, 128}, // dimmed light 2 because closer to edge of housing
+    {3, 5, 0, 255, 255}
+);
+
+const rgblight_segment_t* const PROGMEM glow_layers[] = RGBLIGHT_LAYERS_LIST(
+    glow_macro_rec_1,
+    glow_macro_rec_2,
+    glow_layer_fn1,
+    glow_layer_fn2,
+    glow_caps,
+    glow_shift,
+    glow_ctl,
+    glow_reset
+);
+
+
+
+/***********************************************************************************************************************
+*
+*   KEYPRESS EVENTS
+*
+***********************************************************************************************************************/
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+
+    /* // FAILED WITH:  error: implicit declaration of function ‘process_record_dynamic_macro’ [-Werror=implicit-function-declaration]
+        uint16_t macro_kc = (keycode == MO(_DYN) ? DYN_REC_STOP : keycode);
+        if (!process_record_dynamic_macro(macro_kc, record)) {
+            return false;
+        }
+    */
+
+    // blink example - use while recording macros
+    //rgblight_blink_layer(2, 500); // this doesn't go on and off - just stays on for duration
+
+    switch (keycode) {
+        case KC_LSFT:
+            rgblight_set_layer_state(GLOW_INDEX_SHIFT, record->event.pressed);
+            return true;
+        case KC_RSFT:
+            rgblight_set_layer_state(GLOW_INDEX_SHIFT, record->event.pressed);
+            return true;
+        case KC_LCTRL:
+            rgblight_set_layer_state(GLOW_INDEX_CTL, record->event.pressed);
+            return true;
+        case DYN_REC_START1:
+            rgblight_set_layer_state(GLOW_INDEX_MACRO1, 1);
+            return true;
+        case DYN_REC_START2:
+            rgblight_set_layer_state(GLOW_INDEX_MACRO2, 1);
+            return true;
+        case DYN_REC_STOP:
+            rgblight_set_layer_state(GLOW_INDEX_MACRO1, 0);
+            rgblight_set_layer_state(GLOW_INDEX_MACRO2, 0);
+            return true;
+        case RESET:
+
+            // turn off all layer lights
+            rgblight_set_layer_state(GLOW_INDEX_FN1, 0);
+            rgblight_set_layer_state(GLOW_INDEX_FN2, 0);
+
+            // turn on the reset light
+            rgblight_set_layer_state(GLOW_INDEX_RESET, 1);
+
+            return true;
+        default:
+            return true;
     }
 }
 
 
 
-// RGB LED Indicators
-const rgblight_segment_t PROGMEM my_capslock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {9, 1, 0, 255, 128},
-    {10, 1, 0, 255, 255},
-    {11, 1, 0, 255, 128}
-);
-const rgblight_segment_t PROGMEM my_test_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {3, 1, 24, 255, 255},
-    {4, 1, 24, 255, 255}
-);
-const rgblight_segment_t PROGMEM my_reset_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {3, 5, 0, 255, 255}
-);
-const rgblight_segment_t PROGMEM layer_lalt[] = RGBLIGHT_LAYER_SEGMENTS(
-    {7, 1, 24, 255, 255}
-);
-const rgblight_segment_t PROGMEM layer_fn1[] = RGBLIGHT_LAYER_SEGMENTS(
-    {8, 1, 24, 255, 255}
-);
-
-// Now define the array of layers. Later layers take precedence
-const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
-    my_capslock_layer,
-    my_test_layer,
-    my_reset_layer,
-    layer_lalt,
-    layer_fn1
-);
+/***********************************************************************************************************************
+*
+*   KEYBOARD READY STATE
+*
+***********************************************************************************************************************/
 
 void keyboard_post_init_user(void) {
-    // Enable the LED layers
-    rgblight_layers = my_rgb_layers;
-}
 
+    rgblight_layers = glow_layers;
+    rgblight_set_layer_state(GLOW_INDEX_FN1, 0); // refresh glow state - was turning on green lights on right edge when coming out of DFU
 
-
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
-    case KC_RALT:
-        rgblight_set_layer_state(1, record->event.pressed);
-      	return true;
-    case KC_LALT:
-        rgblight_set_layer_state(3, record->event.pressed);
-      	return true;
-    case RESET:
-        rgblight_set_layer_state(2, 1);
-      	return true;
-        //rgblight_blink_layer(2, 500); // this doesn't go on and off - just stays on for duration
-    default:
-      return true; // Process all other keycodes normally
-  }
 }
