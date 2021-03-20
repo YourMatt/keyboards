@@ -19,3 +19,6 @@ AUDIO_ENABLE = no
 RGBLIGHT_ENABLE = yes
 ENCODER_ENABLE = yes        # Enable support for EC11 Rotary Encoder
 DYNAMIC_MACRO_ENABLE = yes
+UNICODEMAP_ENABLE = yes
+COMBO_ENABLE = yes          # Using for fractions when tapping two numbers
+# TAP_DANCE_ENABLE = yes

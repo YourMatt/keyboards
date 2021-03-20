@@ -67,4 +67,8 @@
 // may need following for setting macro record to also stop recording, but removed when running example code caused an error
 //#define DYNAMIC_MACRO_USER_CALL
 
+#define UNICODE_SELECTED_MODES UC_WINC //
+
+#define COMBO_COUNT 1
+
 #endif
