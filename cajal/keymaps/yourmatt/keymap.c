@@ -71,6 +71,7 @@ const uint32_t PROGMEM unicode_map[] = {
     [U_DIVIDE]  = 0x00F7, // ÷
     [U_ELLIPSIS]    = 0x2026, // …
 
+    /*
     [U_FRAC_1_2] = 0x00BD, // ½
     [U_FRAC_1_3]    = 0x2153, // ⅓
     [U_FRAC_2_3]    = 0x2154, // ⅔
@@ -81,6 +82,7 @@ const uint32_t PROGMEM unicode_map[] = {
     [U_FRAC_5_8]    = 0x215D, // ⅝
     [U_FRAC_7_8]    = 0x215E, // ⅞
     [U_FRAC_SLASH]  = 0x2044, // ⁄
+    */
 
     [U_INTERROBANG] = 0x203D, // ‽
     [U_PLUSMINUS] = 0x00B1 // ±
@@ -111,10 +113,144 @@ const uint32_t PROGMEM unicode_map[] = {
 
 };
 
-/*
-const uint16_t PROGMEM test_combo[] = {KC_1, KC_3, COMBO_END};
-combo_t key_combos[COMBO_COUNT] = {COMBO(test_combo, X(U_FRAC_1_3))};
-*/
+
+
+/***********************************************************************************************************************
+*
+*   COMBOS
+*
+***********************************************************************************************************************/
+
+enum combo_events {
+    C_FRAC_1_2,
+    C_FRAC_1_3,
+    C_FRAC_2_3,
+    C_FRAC_1_4,
+    C_FRAC_3_4,
+    C_FRAC_1_5,
+    C_FRAC_2_5,
+    C_FRAC_3_5,
+    C_FRAC_4_5,
+    C_FRAC_1_6,
+    C_FRAC_5_6,
+    C_FRAC_1_7,
+    C_FRAC_1_8,
+    C_FRAC_3_8,
+    C_FRAC_5_8,
+    C_FRAC_7_8,
+    C_FRAC_1_9,
+    C_FRAC_1_10,
+    C_FRAC_0_3
+};
+
+const uint16_t PROGMEM combo_frac_1_2[] = {KC_1, KC_2, COMBO_END};
+const uint16_t PROGMEM combo_frac_1_3[] = {KC_1, KC_3, COMBO_END};
+const uint16_t PROGMEM combo_frac_2_3[] = {KC_2, KC_3, COMBO_END};
+const uint16_t PROGMEM combo_frac_1_4[] = {KC_1, KC_4, COMBO_END};
+const uint16_t PROGMEM combo_frac_3_4[] = {KC_3, KC_4, COMBO_END};
+const uint16_t PROGMEM combo_frac_1_5[] = {KC_1, KC_5, COMBO_END};
+const uint16_t PROGMEM combo_frac_2_5[] = {KC_2, KC_5, COMBO_END};
+const uint16_t PROGMEM combo_frac_3_5[] = {KC_3, KC_5, COMBO_END};
+const uint16_t PROGMEM combo_frac_4_5[] = {KC_4, KC_5, COMBO_END};
+const uint16_t PROGMEM combo_frac_1_6[] = {KC_1, KC_6, COMBO_END};
+const uint16_t PROGMEM combo_frac_5_6[] = {KC_5, KC_6, COMBO_END};
+const uint16_t PROGMEM combo_frac_1_7[] = {KC_1, KC_7, COMBO_END};
+const uint16_t PROGMEM combo_frac_1_8[] = {KC_1, KC_8, COMBO_END};
+const uint16_t PROGMEM combo_frac_3_8[] = {KC_3, KC_8, COMBO_END};
+const uint16_t PROGMEM combo_frac_5_8[] = {KC_5, KC_8, COMBO_END};
+const uint16_t PROGMEM combo_frac_7_8[] = {KC_7, KC_8, COMBO_END};
+const uint16_t PROGMEM combo_frac_1_9[] = {KC_1, KC_9, COMBO_END};
+const uint16_t PROGMEM combo_frac_1_10[] = {KC_1, KC_0, COMBO_END};
+const uint16_t PROGMEM combo_frac_0_3[] = {KC_0, KC_3, COMBO_END};
+
+combo_t key_combos[COMBO_COUNT] = {
+    [C_FRAC_1_2] = COMBO_ACTION(combo_frac_1_2),
+    [C_FRAC_1_3] = COMBO_ACTION(combo_frac_1_3),
+    [C_FRAC_2_3] = COMBO_ACTION(combo_frac_2_3),
+    [C_FRAC_1_4] = COMBO_ACTION(combo_frac_1_4),
+    [C_FRAC_3_4] = COMBO_ACTION(combo_frac_3_4),
+    [C_FRAC_1_5] = COMBO_ACTION(combo_frac_1_5),
+    [C_FRAC_2_5] = COMBO_ACTION(combo_frac_2_5),
+    [C_FRAC_3_5] = COMBO_ACTION(combo_frac_3_5),
+    [C_FRAC_4_5] = COMBO_ACTION(combo_frac_4_5),
+    [C_FRAC_1_6] = COMBO_ACTION(combo_frac_1_6),
+    [C_FRAC_5_6] = COMBO_ACTION(combo_frac_5_6),
+    [C_FRAC_1_7] = COMBO_ACTION(combo_frac_1_7),
+    [C_FRAC_1_8] = COMBO_ACTION(combo_frac_1_8),
+    [C_FRAC_3_8] = COMBO_ACTION(combo_frac_3_8),
+    [C_FRAC_5_8] = COMBO_ACTION(combo_frac_5_8),
+    [C_FRAC_7_8] = COMBO_ACTION(combo_frac_7_8),
+    [C_FRAC_1_9] = COMBO_ACTION(combo_frac_1_9),
+    [C_FRAC_1_10] = COMBO_ACTION(combo_frac_1_10),
+    [C_FRAC_0_3] = COMBO_ACTION(combo_frac_0_3)
+};
+
+void process_combo_event(uint16_t combo_index, bool pressed) {
+
+    if (!pressed) return;
+
+    switch (combo_index) {
+        case C_FRAC_1_2:
+            send_unicode_string("½");
+            break;
+        case C_FRAC_1_3:
+            send_unicode_string("⅓");
+            break;
+        case C_FRAC_2_3:
+            send_unicode_string("⅔");
+            break;
+        case C_FRAC_1_4:
+            send_unicode_string("¼");
+            break;
+        case C_FRAC_3_4:
+            send_unicode_string("¾");
+            break;
+        case C_FRAC_1_5:
+            send_unicode_string("⅕");
+            break;
+        case C_FRAC_2_5:
+            send_unicode_string("⅖");
+            break;
+        case C_FRAC_3_5:
+            send_unicode_string("⅗");
+            break;
+        case C_FRAC_4_5:
+            send_unicode_string("⅘");
+            break;
+        case C_FRAC_1_6:
+            send_unicode_string("⅙");
+            break;
+        case C_FRAC_5_6:
+            send_unicode_string("⅚");
+            break;
+        case C_FRAC_1_7:
+            send_unicode_string("⅐");
+            break;
+        case C_FRAC_1_8:
+            send_unicode_string("⅛");
+            break;
+        case C_FRAC_3_8:
+            send_unicode_string("⅜");
+            break;
+        case C_FRAC_5_8:
+            send_unicode_string("⅝");
+            break;
+        case C_FRAC_7_8:
+            send_unicode_string("⅞");
+            break;
+        case C_FRAC_1_9:
+            send_unicode_string("⅑");
+            break;
+        case C_FRAC_1_10:
+            send_unicode_string("⅒");
+            break;
+        case C_FRAC_0_3:
+            send_unicode_string("↉");
+            break;
+    }
+
+}
+
 
 
 /***********************************************************************************************************************
@@ -193,12 +329,14 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             rgblight_set_layer_state(GI_FN2, 1);
             break;
 
+        /*
         case L_4:
             writePinLow(B7);
             writePinLow(B6);
             rgblight_set_layer_state(GI_FN1, 1);
             rgblight_set_layer_state(GI_FN2, 1);
             break;
+        */
 
         default:
             writePinLow(B7);
@@ -386,6 +524,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             rgblight_set_layer_state(GI_MACRO1, 0);
             rgblight_set_layer_state(GI_MACRO1, 0);
             return true;
+
+        // set super and subscript for all numbers
         case KC_1:
             if (record->event.pressed) {
                 if (H_SHIFT) { send_unicode_string("¹"); return false; }
@@ -449,6 +589,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_BSLASH:
             if (record->event.pressed && H_L1_ALT) { send_unicode_string("⁄"); return false; }
             return true;
+
+        // dfu
         case RESET:
 
             // turn off all layer lights
@@ -459,10 +601,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             rgblight_set_layer_state(GI_RESET, 1);
 
             return true;
+
         default:
             return true;
+
     }
 }
+
+
 
 /*
 // Runs constantly in the background, in a loop.

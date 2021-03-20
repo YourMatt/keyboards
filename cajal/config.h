@@ -69,6 +69,6 @@
 
 #define UNICODE_SELECTED_MODES UC_WINC //
 
-#define COMBO_COUNT 1
+#define COMBO_COUNT 19
 
 #endif
