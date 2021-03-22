@@ -19,8 +19,7 @@
         - Add custom animation for RGB_TOG that dims LEDs under the arrows by 50%
     - Layers
         - Consider application-specific shortcuts
-            - Excel
-                - Edit cell contents
+        - Add pre-recorded macros for layer 3 under right hand
     - Encoder
         - Decide what to do with it
 */
@@ -34,21 +33,16 @@
 ***********************************************************************************************************************/
 
 enum layer_indexes {
-    L_DEFAULT, L_1, L_2, L_3, L_4
+    L_DEFAULT, L_1, L_2, L_3
 };
 enum glow_indexes {
     GI_MACRO1, GI_MACRO2, GI_FN1, GI_FN2, GI_CAPS, GI_SHIFT, GI_CTL, GI_RESET
 };
 enum unicode_names {
-    U_BULLET,
-    U_COPY,
-    U_DEGREE,
-    U_DIVIDE,
-    U_ELLIPSIS,
-    U_FRAC_1_2, U_FRAC_1_3, U_FRAC_2_3, U_FRAC_1_4, U_FRAC_3_4, U_FRAC_1_8, U_FRAC_3_8, U_FRAC_5_8, U_FRAC_7_8, U_FRAC_SLASH,
-    U_INTERROBANG, U_PLUSMINUS /*,
-    U_SUB_1, U_SUB_2, U_SUB_3, U_SUB_4, U_SUB_5, U_SUB_6, U_SUB_7, U_SUB_8, U_SUB_9, U_SUB_0,
-    U_SUP_1, U_SUP_2, U_SUP_3, U_SUP_4, U_SUP_5, U_SUP_6, U_SUP_7, U_SUP_8, U_SUP_9, U_SUP_0 */
+    U_ARROW_CCW, U_ARROW_CW, U_ARROW_DOWN, U_ARROW_LEFT, U_ARROW_RIGHT, U_ARROW_UP,
+    U_BULLET, U_CENTS, U_COPY, U_DEGREE, U_DIVIDE, U_ELLIPSIS, U_INTERROBANG, U_MICRO, U_PLUSMINUS, U_REG, U_SKULL,
+    U_STAR_FILLED, U_STAR_OUTLINE, U_TIMES, U_TRIANGLE_DOWN, U_TRIANGLE_LEFT, U_TRIANGLE_RIGHT, U_TRIANGLE_UP,
+    U_E_EYEROLL, U_E_JOY, U_E_KISS, U_E_LOVE, U_E_ROFL, U_E_SMILE, U_E_THINK
 };
 
 
@@ -61,55 +55,49 @@ enum unicode_names {
 *
 ***********************************************************************************************************************/
 
-// µ
-// [U_SNEK]  = 0x1F40D, // 🐍
+/*  Remaining layer-3 characters:
+    e g h i j k l n o s t u v w y z ,
+    That includes top row Y-P and 2nd row G-L. Might block off this section for macros. If so that, leaves the
+    following for characters:
+    e n s v z ,
+*/
 
 const uint32_t PROGMEM unicode_map[] = {
-    [U_BULLET]  = 0x2022, // •
-    [U_COPY]    = 0x00A9, // ©
-    [U_DEGREE]  = 0x00B0, // °
-    [U_DIVIDE]  = 0x00F7, // ÷
-    [U_ELLIPSIS]    = 0x2026, // …
 
-    /*
-    [U_FRAC_1_2] = 0x00BD, // ½
-    [U_FRAC_1_3]    = 0x2153, // ⅓
-    [U_FRAC_2_3]    = 0x2154, // ⅔
-    [U_FRAC_1_4] = 0x00BC, // ¼
-    [U_FRAC_3_4] = 0x00BE, // ¾
-    [U_FRAC_1_8]    = 0x215B, // ⅛
-    [U_FRAC_3_8]    = 0x215C, // ⅜
-    [U_FRAC_5_8]    = 0x215D, // ⅝
-    [U_FRAC_7_8]    = 0x215E, // ⅞
-    [U_FRAC_SLASH]  = 0x2044, // ⁄
-    */
+    // unicode
+    [U_ARROW_CCW] = 0x21BA,         // ↺	try for combo up/left - just as use case to see if doable - will probably never actually use this
+    [U_ARROW_CW] = 0x21BB,          // ↻	try for combo up/right - the trick is using a combo on a single-shot layer
+    [U_ARROW_DOWN] = 0x2193,        // ↓	down arrow
+    [U_ARROW_LEFT] = 0x2190,        // ←	left arrow
+    [U_ARROW_RIGHT] = 0x2192,       // →	right arrow
+    [U_ARROW_UP] = 0x2191,          // ↑	up arrow
+    [U_BULLET]  = 0x2022,           // •	b
+    [U_CENTS] = 0x00A2,             // ¢	f
+    [U_COPY]    = 0x00A9,           // ©	c
+    [U_DEGREE]  = 0x00B0,           // °	d
+    [U_DIVIDE]  = 0x00F7,           // ÷	p
+    [U_ELLIPSIS]    = 0x2026,       // …	.
+    [U_INTERROBANG] = 0x203D,       // ‽	a
+    [U_MICRO] = 0x00B5,             // µ	m
+    [U_PLUSMINUS] = 0x00B1,         // ±	]
+    [U_REG] = 0x00AE,               // ®	r
+    [U_SKULL] = 0x2620,             // ☠	esc
+    [U_STAR_FILLED] = 0x2605,       // ★	q
+    [U_STAR_OUTLINE] = 0x2606,      // ☆	w
+    [U_TIMES] = 0x00D7,             // ×	x
+    [U_TRIANGLE_DOWN] = 0x23F7,     // ⏷	rshift
+    [U_TRIANGLE_LEFT] = 0x23F4,     // ⏴	;
+    [U_TRIANGLE_RIGHT] = 0x23F5,    // ⏵	enter
+    [U_TRIANGLE_UP] = 0x23F6,       // ⏶	[
 
-    [U_INTERROBANG] = 0x203D, // ‽
-    [U_PLUSMINUS] = 0x00B1 // ±
-
-    /*
-    [U_SUB_1] = 0x2081, // ₁
-    [U_SUB_2] = 0x2082, // ₂
-    [U_SUB_3] = 0x2083, // ₃
-    [U_SUB_4] = 0x2084, // ₄
-    [U_SUB_5] = 0x2085, // ₅
-    [U_SUB_6] = 0x2086, // ₆
-    [U_SUB_7] = 0x2087, // ₇
-    [U_SUB_8] = 0x2088, // ₈
-    [U_SUB_9] = 0x2089, // ₉
-    [U_SUB_0] = 0x2080, // ₀
-
-    [U_SUP_1] = 0x00B9, // ¹
-    [U_SUP_2] = 0x00B2, // ²
-    [U_SUP_3] = 0x00B3, // ³
-    [U_SUP_4] = 0x2074, // ⁴
-    [U_SUP_5] = 0x2075, // ⁵
-    [U_SUP_6] = 0x2076, // ⁶
-    [U_SUP_7] = 0x2077, // ⁷
-    [U_SUP_8] = 0x2078, // ⁸
-    [U_SUP_9] = 0x2079, // ⁹
-    [U_SUP_0] = 0x2070  // ⁰
-    */
+    // emojis
+    [U_E_EYEROLL] = 0x1F644,        // 🙄	ctrl
+    [U_E_JOY] = 0x1F602,            // 😂	backspace
+    [U_E_KISS] = 0x1F618,           // 😘	lalt
+    [U_E_LOVE] = 0x1F60D,           // 😍	menu
+    [U_E_ROFL] = 0x1F923,           // 🤣	ralt
+    [U_E_SMILE] = 0x1F600,          // 😀	space
+    [U_E_THINK] = 0x1F914           // 🤔	lshift
 
 };
 
@@ -283,18 +271,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [L_3] = LAYOUT_stagger(
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, RESET,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
-    )/*,
-
-    [L_4] = LAYOUT_stagger(
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, XP(X(U_SUP_7), X(U_SUB_7)), XP(X(U_SUP_8), X(U_SUB_8)), XP(X(U_SUP_9), X(U_SUB_9)), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, XP(X(U_SUP_4), X(U_SUB_4)), XP(X(U_SUP_5), X(U_SUB_5)), XP(X(U_SUP_6), X(U_SUB_6)), KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, XP(X(U_SUP_1), X(U_SUB_1)), XP(X(U_SUP_2), X(U_SUB_2)), XP(X(U_SUP_3), X(U_SUB_3)), X(U_FRAC_SLASH), KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, XP(X(U_SUP_0), X(U_SUB_0)), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
-    )*/
+        X(U_SKULL), X(U_STAR_FILLED), X(U_STAR_OUTLINE), KC_TRNS, X(U_REG), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, X(U_DIVIDE), X(U_TRIANGLE_UP), X(U_PLUSMINUS), RESET,
+        X(U_E_EYEROLL), X(U_INTERROBANG), KC_TRNS, X(U_DEGREE), X(U_CENTS), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, X(U_TRIANGLE_LEFT), X(U_TRIANGLE_RIGHT),
+        X(U_E_THINK), KC_TRNS, X(U_TIMES), X(U_COPY), KC_TRNS, X(U_BULLET), KC_TRNS, X(U_MICRO), KC_TRNS, X(U_ELLIPSIS), X(U_TRIANGLE_DOWN), X(U_ARROW_UP),
+        KC_TRNS, X(U_E_KISS), X(U_E_LOVE), X(U_E_JOY), X(U_E_SMILE), X(U_E_ROFL), KC_TRNS, X(U_ARROW_LEFT), X(U_ARROW_DOWN), X(U_ARROW_RIGHT)
+    )
 
 };
 
@@ -328,15 +309,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             rgblight_set_layer_state(GI_FN1, 1);
             rgblight_set_layer_state(GI_FN2, 1);
             break;
-
-        /*
-        case L_4:
-            writePinLow(B7);
-            writePinLow(B6);
-            rgblight_set_layer_state(GI_FN1, 1);
-            rgblight_set_layer_state(GI_FN2, 1);
-            break;
-        */
 
         default:
             writePinLow(B7);
