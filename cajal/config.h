@@ -40,8 +40,8 @@
 /* COL2ROW or ROW2COL */
 #define DIODE_DIRECTION COL2ROW
 
-/* Set 0 if debouncing isn't needed */
-#define DEBOUNCE 5
+/* Set value if keys start to chatter. Was originally set to 5. */
+#define DEBOUNCE 0
 
 /* Mechanical locking support. Use KC_LCAP, KC_LNUM or KC_LSCR instead in keymap */
 #define LOCKING_SUPPORT_ENABLE
@@ -49,27 +49,26 @@
 /* Locking resynchronize hack */
 #define LOCKING_RESYNC_ENABLE
 
+/* RGB options */
 #define RGB_DI_PIN F7
 #ifdef RGB_DI_PIN
-// temporarily removing all animations to save on firmware size
-//#define RGBLIGHT_ANIMATIONS
-//#define RGBLIGHT_EFFECT_STATIC_GRADIENT
-//#define RGBLIGHT_EFFECT_RAINBOW_SWIRL
-#define RGBLED_NUM 18
-#define RGBLIGHT_HUE_STEP 8
-#define RGBLIGHT_SAT_STEP 8
-#define RGBLIGHT_VAL_STEP 8
 
-#define RGBLIGHT_LAYERS
-#define RGBLIGHT_LAYERS_OVERRIDE_RGB_OFF
-#define RGBLIGHT_LAYER_BLINK
+    #define RGBLIGHT_CAJAL // dims leds in front of arrow keys to account for the closer edge positions of the leds
+    #define RGBLED_NUM 18
+    #define RGBLIGHT_HUE_STEP 2
+    #define RGBLIGHT_SAT_STEP 8
+    #define RGBLIGHT_VAL_STEP 8
+
+    #define RGBLIGHT_LAYERS
+    #define RGBLIGHT_LAYERS_OVERRIDE_RGB_OFF
+    #define RGBLIGHT_LAYER_BLINK
+
+#endif
 
 // may need following for setting macro record to also stop recording, but removed when running example code caused an error
 //#define DYNAMIC_MACRO_USER_CALL
 
-#define UNICODE_SELECTED_MODES UC_WINC //
+#define UNICODE_SELECTED_MODES UC_WINC // use Windows unicode handler
 
 #define COMBO_COUNT 19
 #define COMBO_TERM 50
-
-#endif

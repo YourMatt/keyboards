@@ -8,7 +8,8 @@
 
 /* TODO:
     - Keymap
-        - Change RGB mode controls
+        - Attempt L3 combo keys for clockwise and counter-clockwise icons
+        - Consider bottom left keys together as Home - More for muscle memory from old keyboard
     - Macros
         - Move to be under shift on layer 2 if tap - Keep shift if held
         - Set record tap to stop record if already recording
@@ -16,12 +17,19 @@
         - Set glow state for right-shift - Not working likely due to use MT with mod_rsft - Explanation is that
           process_record_user is not called for mod-tap and instead uses register_code directly - May not be able to fix
           this issue
-        - Add custom animation for RGB_TOG that dims LEDs under the arrows by 50%
     - Layers
         - Consider application-specific shortcuts
         - Add pre-recorded macros for layer 3 under right hand
     - Encoder
-        - Decide what to do with it
+        - Decide what to do with layer 3
+
+   RANDOM NOTES:
+    - Add process_record_kb function to see if this can trap unicode.
+    - If need to constantly run in background to check state, add:
+      void matrix_scan_user(void) {
+        // do stuff
+      };
+
 */
 
 
@@ -71,12 +79,12 @@ const uint32_t PROGMEM unicode_map[] = {
     [U_ARROW_LEFT] = 0x2190,        // ←	left arrow
     [U_ARROW_RIGHT] = 0x2192,       // →	right arrow
     [U_ARROW_UP] = 0x2191,          // ↑	up arrow
-    [U_BULLET]  = 0x2022,           // •	b
+    [U_BULLET] = 0x2022,            // •	b
     [U_CENTS] = 0x00A2,             // ¢	f
-    [U_COPY]    = 0x00A9,           // ©	c
-    [U_DEGREE]  = 0x00B0,           // °	d
-    [U_DIVIDE]  = 0x00F7,           // ÷	p
-    [U_ELLIPSIS]    = 0x2026,       // …	.
+    [U_COPY] = 0x00A9,              // ©	c
+    [U_DEGREE] = 0x00B0,            // °	d
+    [U_DIVIDE] = 0x00F7,            // ÷	p
+    [U_ELLIPSIS] = 0x2026,          // …	.
     [U_INTERROBANG] = 0x203D,       // ‽	a
     [U_MICRO] = 0x00B5,             // µ	m
     [U_PLUSMINUS] = 0x00B1,         // ±	]
@@ -111,21 +119,13 @@ const uint32_t PROGMEM unicode_map[] = {
 
 enum combo_events {
     C_FRAC_1_2,
-    C_FRAC_1_3,
-    C_FRAC_2_3,
-    C_FRAC_1_4,
-    C_FRAC_3_4,
+    C_FRAC_1_3, C_FRAC_2_3,
+    C_FRAC_1_4, C_FRAC_3_4,
     C_FRAC_1_5,
-    C_FRAC_2_5,
-    C_FRAC_3_5,
-    C_FRAC_4_5,
-    C_FRAC_1_6,
-    C_FRAC_5_6,
+    C_FRAC_2_5, C_FRAC_3_5, C_FRAC_4_5,
+    C_FRAC_1_6, C_FRAC_5_6,
     C_FRAC_1_7,
-    C_FRAC_1_8,
-    C_FRAC_3_8,
-    C_FRAC_5_8,
-    C_FRAC_7_8,
+    C_FRAC_1_8, C_FRAC_3_8, C_FRAC_5_8, C_FRAC_7_8,
     C_FRAC_1_9,
     C_FRAC_1_10,
     C_FRAC_0_3
@@ -253,21 +253,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRACKET, KC_RBRACKET, RGB_TOG,
         KC_LCTRL, KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCOLON, KC_ENT,
         KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, MT(MOD_RSFT, KC_SLASH), KC_UP,
-        MO(L_1), KC_LALT, KC_LGUI, KC_BSPACE, KC_SPC, KC_RALT, MO(L_2), KC_LEFT, KC_DOWN, KC_RGHT
+        MO(L_1), KC_LALT, KC_LGUI, KC_BSPACE, KC_SPC, KC_RALT, MO(L_2), KC_LEFT, KC_DOWN, KC_RIGHT
     ),
 
     [L_1] = LAYOUT_stagger(
-        KC_GRAVE, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINUS, KC_EQUAL, RGB_MOD,
-        KC_TRNS, DYN_MACRO_PLAY1, DYN_MACRO_PLAY2, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_4, KC_5, KC_6, KC_QUOTE, KC_TRNS,
+        KC_GRAVE, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINUS, KC_EQUAL, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_4, KC_5, KC_6, KC_QUOTE, KC_TRNS,
         KC_TRNS, DYN_REC_START1, DYN_REC_START2, DYN_REC_STOP, KC_TRNS, KC_TRNS, KC_TRNS, KC_1, KC_2, KC_3, KC_BSLASH, KC_PGUP,
-        KC_TRNS, KC_TRNS, /*LT(L_4, KC_HOME),*/ KC_TRNS, KC_INSERT, KC_TAB, KC_0, OSL(L_3), KC_HOME, KC_PGDN, KC_END
+        KC_TRNS, DYN_MACRO_PLAY1, DYN_MACRO_PLAY2, KC_INSERT, KC_TAB, KC_0, OSL(L_3), KC_HOME, KC_PGDN, KC_END
     ),
 
     [L_2] = LAYOUT_stagger(
         KC_CAPSLOCK, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_TRNS,
         KC_TRNS, KC_EXCLAIM, KC_AT, KC_HASH, KC_DOLLAR, KC_PERCENT, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_CIRCUMFLEX, KC_AMPERSAND, KC_ASTERISK, KC_LEFT_PAREN, KC_RIGHT_PAREN, KC_TRNS, KC_TRNS, RGB_SAD, RGB_SAI, KC_TRNS, RGB_VAI,
-        OSL(L_3), KC_TRNS, KC_TRNS, KC_DELETE, KC_TRNS, KC_END, KC_TRNS, RGB_HUD, RGB_VAD, RGB_HUI
+        KC_TRNS, KC_CIRCUMFLEX, KC_AMPERSAND, KC_ASTERISK, KC_LEFT_PAREN, KC_RIGHT_PAREN, KC_TRNS, KC_TRNS, RGB_SAD, RGB_SAI, KC_TRNS, KC_TRNS,
+        OSL(L_3), KC_TRNS, KC_TRNS, KC_DELETE, KC_TRNS, KC_END, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
     ),
 
     [L_3] = LAYOUT_stagger(
@@ -279,6 +279,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
+
+
+/***********************************************************************************************************************
+*
+*   STATICS
+*
+***********************************************************************************************************************/
+
+// each are set to true when holding the related key
+//static bool H_ALT = false;
+static bool H_SHIFT = false;
+
+// when holding the key for the specified layer
+static bool H_L1_ALT = false;
+static bool H_L2_LEFT = false;
+static bool H_L2_RIGHT = false;
 
 
 /***********************************************************************************************************************
@@ -348,12 +364,13 @@ bool led_update_user(led_t led_state) {
 *
 ***********************************************************************************************************************/
 
-// TEMPORARILY UPDATED TO CYCLE THROUGH LEDS WHILE TESTING LIGHT ISOLATION ON PHYSICAL BOARD
-static uint16_t ENC_TRACKER = 0;
-void encoder_update_user(uint8_t index, bool clockwise) {
+// static uint8_t ENC_TRACKER = 0;
+void encoder_update_user(uint8_t index, bool ccw) {
 
-    if (clockwise) ENC_TRACKER++;
-    else ENC_TRACKER--;
+    /*
+    // TEMPORARILY UPDATED TO CYCLE THROUGH LEDS WHILE TESTING LIGHT ISOLATION ON PHYSICAL BOARD
+    if (ccw) ENC_TRACKER--;
+    else ENC_TRACKER++;
 
     switch (ENC_TRACKER % 4) {
         case 0:
@@ -377,17 +394,45 @@ void encoder_update_user(uint8_t index, bool clockwise) {
             writePinHigh(B7);
             break;
     }
+    */
 
-/*
-    if (index == 0) {
-        if (clockwise) {
-            tap_code(KC_VOLD);
-        }
-        else {
-            tap_code(KC_VOLU);
-        }
+    // change action depending upon layer
+    uint8_t layer = biton32(layer_state);
+    switch (layer) {
+
+        // up and down for default
+        case L_DEFAULT:
+            if (ccw) tap_code(KC_UP);
+            else tap_code(KC_DOWN);
+            break;
+
+        // left and right for layer 1
+        case L_1:
+            if (ccw) tap_code(KC_LEFT);
+            else tap_code(KC_RIGHT);
+            break;
+
+        // rgb controls for layer 2
+        case L_2:
+            if (H_L2_LEFT) {
+                if (ccw) rgblight_decrease_hue();
+                else rgblight_increase_hue();
+            }
+            else if (H_L2_RIGHT) {
+                if (ccw) rgblight_decrease_sat();
+                else rgblight_increase_sat();
+            }
+            else {
+                if (ccw) rgblight_decrease_val();
+                else rgblight_increase_val();
+            }
+            break;
+
+        // TBD for layer 3
+        case L_3:
+            break;
+
     }
-*/
 
 }
 
@@ -451,9 +496,6 @@ const rgblight_segment_t* const PROGMEM glow_layers[] = RGBLIGHT_LAYERS_LIST(
 *
 ***********************************************************************************************************************/
 
-static bool H_SHIFT = false;
-static bool H_L1_ALT = false;
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     /* // FAILED WITH:  error: implicit declaration of function ‘process_record_dynamic_macro’ [-Werror=implicit-function-declaration]
@@ -469,22 +511,49 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     uint8_t layer = biton32(layer_state);
     switch (keycode) {
         case KC_LSFT:
+        case KC_RSFT: // right shift trap currently not operational - the MT() function appears to bypass process_record_user
+
+            // hold status of press for superscript numbers
             H_SHIFT = record->event.pressed;
             rgblight_set_layer_state(GI_SHIFT, record->event.pressed);
-            return true;
-        case KC_RSFT: // currently not operational
-            rgblight_set_layer_state(GI_SHIFT, record->event.pressed);
+
             return true;
         case KC_LALT:
         case KC_RALT:
+
+            // hold status of press for subscript numbers
             if (!record->event.pressed) H_L1_ALT = false; // reset alt if layer 1 released before alt
             if (layer == L_1) {
                 H_L1_ALT = record->event.pressed;
-                return false;
+                return false; // don't actually register the alt for layer 1 - using only for subscript unicode
             }
+
             return true;
         case KC_LCTRL:
+
+            // set lighting while holding control
             rgblight_set_layer_state(GI_CTL, record->event.pressed);
+
+            return true;
+        case KC_LEFT:
+
+            // hold status of press for use by encoder while in layer 2
+            if (!record->event.pressed) H_L2_LEFT = false;
+            if (layer == L_2) {
+                H_L2_LEFT = record->event.pressed;
+                return false;
+            }
+
+            return true;
+        case KC_RIGHT:
+
+            // hold status of press for use by encoder while in layer 2
+            if (!record->event.pressed) H_L2_RIGHT = false;
+            if (layer == L_2) {
+                H_L2_RIGHT = record->event.pressed;
+                return false;
+            }
+
             return true;
         case DYN_REC_START1:
             rgblight_set_layer_state(GI_MACRO1, 1);
@@ -579,28 +648,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     }
 }
-
-
-
-/*
-// Runs constantly in the background, in a loop.
-void matrix_scan_user(void) {
-
-    uint8_t layer = biton32(layer_state);
-
-    // INSERT CODE HERE: turn off all leds
-
-    switch (layer) {
-        case L_1:
-            // INSERT CODE HERE: turn on leds that correspond to YOUR_LAYER_1
-            break;
-        case L_2:
-            // INSERT CODE HERE: turn on leds that correspond to YOUR_LAYER_2
-            break;
-        // add case for each layer
-    }
-};
-*/
 
 
 
