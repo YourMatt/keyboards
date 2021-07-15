@@ -10,6 +10,7 @@
     - Keymap
         - Attempt L3 combo keys for clockwise and counter-clockwise icons
         - Consider bottom left keys together as Home - More for muscle memory from old keyboard
+        - Faster caps change - Thinking Ctrl-Space
     - Macros
         - Move to be under shift on layer 2 if tap - Keep shift if held
         - Set record tap to stop record if already recording
@@ -51,6 +52,9 @@ enum unicode_names {
     U_BULLET, U_CENTS, U_COPY, U_DEGREE, U_DIVIDE, U_ELLIPSIS, U_INTERROBANG, U_MICRO, U_PLUSMINUS, U_REG, U_SKULL,
     U_STAR_FILLED, U_STAR_OUTLINE, U_TIMES, U_TRIANGLE_DOWN, U_TRIANGLE_LEFT, U_TRIANGLE_RIGHT, U_TRIANGLE_UP,
     U_E_EYEROLL, U_E_JOY, U_E_KISS, U_E_LOVE, U_E_ROFL, U_E_SMILE, U_E_THINK
+};
+enum custom_keycodes {
+    CKC_PASS = SAFE_RANGE
 };
 
 
@@ -253,7 +257,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRACKET, KC_RBRACKET, RGB_TOG,
         KC_LCTRL, KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCOLON, KC_ENT,
         KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, MT(MOD_RSFT, KC_SLASH), KC_UP,
-        MO(L_1), KC_LALT, KC_LGUI, KC_BSPACE, KC_SPC, KC_RALT, MO(L_2), KC_LEFT, KC_DOWN, KC_RIGHT
+        MO(L_1), KC_LALT, KC_LGUI, KC_BSPACE, KC_SPACE, KC_RALT, MO(L_2), KC_LEFT, KC_DOWN, KC_RIGHT
     ),
 
     [L_1] = LAYOUT_stagger(
@@ -266,7 +270,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_2] = LAYOUT_stagger(
         KC_CAPSLOCK, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_TRNS,
         KC_TRNS, KC_EXCLAIM, KC_AT, KC_HASH, KC_DOLLAR, KC_PERCENT, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_CIRCUMFLEX, KC_AMPERSAND, KC_ASTERISK, KC_LEFT_PAREN, KC_RIGHT_PAREN, KC_TRNS, KC_TRNS, RGB_SAD, RGB_SAI, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_CIRCUMFLEX, KC_AMPERSAND, KC_ASTERISK, KC_LEFT_PAREN, KC_RIGHT_PAREN, KC_TRNS, KC_TRNS, RGB_SAD, RGB_SAI, CKC_PASS, KC_TRNS,
         OSL(L_3), KC_TRNS, KC_TRNS, KC_DELETE, KC_TRNS, KC_END, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
     ),
 
@@ -496,6 +500,24 @@ const rgblight_segment_t* const PROGMEM glow_layers[] = RGBLIGHT_LAYERS_LIST(
 *
 ***********************************************************************************************************************/
 
+/*  when the following is enabled, even if always returning true with no other functionality, then some things stop
+    working, such as rgb hue and saturation, macros, and dfu lighting - not sure why, but didn't spend much time looking
+    into it
+bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
+
+    switch (keycode) {
+        case KC_RSFT:
+
+            // hold status of press for superscript numbers
+            //H_SHIFT = record->event.pressed;
+            //rgblight_set_layer_state(GI_SHIFT, record->event.pressed);
+
+            return true;
+    }
+    return true;
+}
+*/
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     /* // FAILED WITH:  error: implicit declaration of function ‘process_record_dynamic_macro’ [-Werror=implicit-function-declaration]
@@ -510,6 +532,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     uint8_t layer = biton32(layer_state);
     switch (keycode) {
+
         case KC_LSFT:
         case KC_RSFT: // right shift trap currently not operational - the MT() function appears to bypass process_record_user
 
@@ -641,6 +664,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             // turn on the reset light
             rgblight_set_layer_state(GI_RESET, 1);
 
+            return true;
+
+        // custom keycodes
+        case CKC_PASS:
+            if (record->event.pressed) {
+                SEND_STRING("TKP669!RP");
+            }
             return true;
 
         default:

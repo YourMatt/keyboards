@@ -41,7 +41,7 @@
 #define DIODE_DIRECTION COL2ROW
 
 /* Set value if keys start to chatter. Was originally set to 5. */
-#define DEBOUNCE 0
+#define DEBOUNCE 5
 
 /* Mechanical locking support. Use KC_LCAP, KC_LNUM or KC_LSCR instead in keymap */
 #define LOCKING_SUPPORT_ENABLE
@@ -62,6 +62,7 @@
     #define RGBLIGHT_LAYERS
     #define RGBLIGHT_LAYERS_OVERRIDE_RGB_OFF
     #define RGBLIGHT_LAYER_BLINK
+    #define RGBLIGHT_SLEEP
 
 #endif
 
