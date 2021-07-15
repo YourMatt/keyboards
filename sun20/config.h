@@ -51,11 +51,17 @@
 
 #define RGB_DI_PIN C7
 #ifdef RGB_DI_PIN
-#define RGBLIGHT_ANIMATIONS
-#define RGBLED_NUM 25
-#define RGBLIGHT_HUE_STEP 8
-#define RGBLIGHT_SAT_STEP 8
-#define RGBLIGHT_VAL_STEP 8
+    /* #define RGBLIGHT_ANIMATIONS */
+    #define RGBLED_NUM 25
+    #define RGBLIGHT_HUE_STEP 8
+    #define RGBLIGHT_SAT_STEP 8
+    #define RGBLIGHT_VAL_STEP 8
+
+    #define RGBLIGHT_LAYERS
+    #define RGBLIGHT_LAYERS_OVERRIDE_RGB_OFF
+    #define RGBLIGHT_LAYER_BLINK
+    #define RGBLIGHT_SLEEP
+
 #endif
 
 #endif
