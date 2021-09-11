@@ -55,4 +55,5 @@ BACKLIGHT_ENABLE ?= no  # Enable keyboard backlight functionality
 AUDIO_ENABLE ?= no
 RGBLIGHT_ENABLE ?= yes
 ENCODER_ENABLE = yes
-VIA_ENABLE ?=yes
+DYNAMIC_MACRO_ENABLE = yes
+VIA_ENABLE = no         # originally ?=yes - When this was in play, custom keycodes were not operational

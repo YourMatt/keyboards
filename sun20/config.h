@@ -64,4 +64,7 @@
 
 #endif
 
+#define COMBO_COUNT 19
+#define COMBO_TERM 50
+
 #endif
