@@ -61,14 +61,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [L_3] = LAYOUT(
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, LCTL(KC_LEFT), KC_PGDN, KC_PGUP, LCTL(KC_RIGHT), KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_HOME, LCTL(KC_END), LCTL(KC_HOME), KC_END, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
     )
 
 };
 
+
+/***********************************************************************************************************************
+*
+*   STATICS
+*
+***********************************************************************************************************************/
+
+// each are set to true when holding the related key
+static bool H_LCTRL = false;
 
 
 /***********************************************************************************************************************
@@ -81,6 +90,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     switch (keycode) {
 
+        case KC_LCTRL:
+
+            // hold status of press for ctrl macros
+            H_LCTRL = record->event.pressed;
+
+            return true;
+        case KC_SPC:
+
+            // set caps lock for ctrl+space
+            if (record->event.pressed) {
+                if (H_LCTRL) {
+                    register_code(KC_CAPSLOCK);
+                    return false;
+                }
+            }
+
+            return true;
         // custom keycodes
         case CKC_PASS:
             if (record->event.pressed) {

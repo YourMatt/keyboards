@@ -13,7 +13,6 @@
     - Keymap
         - Attempt L3 combo keys for clockwise and counter-clockwise icons
         - Consider bottom left keys together as Home - More for muscle memory from old keyboard
-        - Faster caps change - Thinking Ctrl-Space
     - Macros
         - Move to be under shift on layer 2 if tap - Keep shift if held
         - Set record tap to stop record if already recording
@@ -25,7 +24,7 @@
         - Consider application-specific shortcuts
         - Add pre-recorded macros for layer 3 under right hand
     - Encoder
-        - Decide what to do with layer 3
+        - Decide what to do with layers 3 and 4
 
    RANDOM NOTES:
     - Add process_record_kb function to see if this can trap unicode.
@@ -285,9 +284,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [L_4] = LAYOUT_stagger(
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, LCTL(KC_LEFT), KC_PGDN, KC_PGUP, LCTL(KC_RIGHT), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_HOME, LCTL(KC_END), LCTL(KC_HOME), KC_END, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
     )
 
@@ -304,6 +303,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // each are set to true when holding the related key
 //static bool H_ALT = false;
 static bool H_SHIFT = false;
+static bool H_LCTRL = false;
 
 // when holding the key for the specified layer
 static bool H_L1_ALT = false;
@@ -568,6 +568,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return true;
         case KC_LCTRL:
 
+            // hold status of press for ctrl macros
+            H_LCTRL = record->event.pressed;
+
             // set lighting while holding control
             rgblight_set_layer_state(GI_CTL, record->event.pressed);
 
@@ -589,6 +592,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (layer == L_2) {
                 H_L2_RIGHT = record->event.pressed;
                 return false;
+            }
+
+            return true;
+        case KC_SPC:
+
+            // set caps lock for ctrl+space
+            if (record->event.pressed) {
+                if (H_LCTRL) {
+                    register_code(KC_CAPSLOCK);
+                    return false;
+                }
             }
 
             return true;
