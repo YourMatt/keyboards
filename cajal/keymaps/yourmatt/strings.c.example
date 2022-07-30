@@ -1,0 +1,9 @@
+/***********************************************************************************************************************
+*
+*   Holds strings to send with SEND_STRING(). This may hold sensitive information, such as passwords. Copy to
+*   strings.c and update values before compiling.
+*
+***********************************************************************************************************************/
+
+#define PASSWORD1 "password1"
+#define PASSWORD2 "password2"

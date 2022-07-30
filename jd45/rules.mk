@@ -25,4 +25,5 @@ COMMAND_ENABLE = yes    # Commands for debug and configuration
 BACKLIGHT_ENABLE = yes  # Enable keyboard backlight functionality
 MIDI_ENABLE = YES 		# MIDI controls
 # UNICODE_ENABLE = YES 		# Unicode
+DYNAMIC_MACRO_ENABLE = yes
 BLUETOOTH_ENABLE = yes # Enable Bluetooth with the Adafruit EZ-Key HID

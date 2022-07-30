@@ -1,10 +1,13 @@
 /***********************************************************************************************************************
 *
 *   YOURMATT: Cajal Mapping
+*   qmk compile -kb yourmatt/cajal -km yourmatt
+*   Enter DFU by: Fn1 + Fn2, then press knob
 *
 ***********************************************************************************************************************/
 
 #include QMK_KEYBOARD_H
+#include "strings.c"
 
 /* TODO:
     - Keymap
@@ -42,7 +45,7 @@
 ***********************************************************************************************************************/
 
 enum layer_indexes {
-    L_DEFAULT, L_1, L_2, L_3
+    L_DEFAULT, L_1, L_2, L_3, L_4
 };
 enum glow_indexes {
     GI_MACRO1, GI_MACRO2, GI_FN1, GI_FN2, GI_CAPS, GI_SHIFT, GI_CTL, GI_RESET
@@ -257,7 +260,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRACKET, KC_RBRACKET, RGB_TOG,
         KC_LCTRL, KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCOLON, KC_ENT,
         KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, MT(MOD_RSFT, KC_SLASH), KC_UP,
-        MO(L_1), KC_LALT, KC_LGUI, KC_BSPACE, KC_SPACE, KC_RALT, MO(L_2), KC_LEFT, KC_DOWN, KC_RIGHT
+        MO(L_1), KC_LALT, KC_LGUI, LT(L_4, KC_BSPACE), KC_SPACE, KC_RALT, MO(L_2), KC_LEFT, KC_DOWN, KC_RIGHT
     ),
 
     [L_1] = LAYOUT_stagger(
@@ -279,6 +282,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         X(U_E_EYEROLL), X(U_INTERROBANG), KC_TRNS, X(U_DEGREE), X(U_CENTS), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, X(U_TRIANGLE_LEFT), X(U_TRIANGLE_RIGHT),
         X(U_E_THINK), KC_TRNS, X(U_TIMES), X(U_COPY), KC_TRNS, X(U_BULLET), KC_TRNS, X(U_MICRO), KC_TRNS, X(U_ELLIPSIS), X(U_TRIANGLE_DOWN), X(U_ARROW_UP),
         KC_TRNS, X(U_E_KISS), X(U_E_LOVE), X(U_E_JOY), X(U_E_SMILE), X(U_E_ROFL), KC_TRNS, X(U_ARROW_LEFT), X(U_ARROW_DOWN), X(U_ARROW_RIGHT)
+    ),
+
+    [L_4] = LAYOUT_stagger(
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
     )
 
 };
@@ -434,6 +444,10 @@ void encoder_update_user(uint8_t index, bool ccw) {
 
         // TBD for layer 3
         case L_3:
+            break;
+
+        // TBD for layer 4
+        case L_4:
             break;
 
     }
@@ -669,7 +683,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         // custom keycodes
         case CKC_PASS:
             if (record->event.pressed) {
-                SEND_STRING("TKP669!RP");
+                SEND_STRING(PASSWORD1);
             }
             return true;
 
