@@ -30,13 +30,30 @@
         - Copy
         - Paste
         - Header style (bold + thick bottom border)
-        -
+      - Lightroom - Use #31A8FF for LED color (matching Adobe app icon color)
+        g - Switch to Library Grid
+        e - Switch to Library Loupe
+        d - Switch to Develop
+        r - Switch to Develop with Crop Overlay
+        f - Full screen photo
+        l - Lights-out modes
+        n - Survey mode to show selected photos and narrow down to keepers
+        b - Add to target collection - Need to right-click collection folder first and then mark for target collection
+        y - Before/after view
+        0-5 - Set rating (shift+# will set rating then move to next)
+        Ctrl+Enter - Slideshow of all images starting at selection
+        , - Go up in adjustment list
+        . - Go down in adjustment list
+        + - Raise value for selected adjustment
+        - - Lower value for selected adjustment
+        Ctrl+Shift+C - Copy develop settings
+        Ctrl+Shift+V - Paste develop settings
     - Underglow
       x Turn off by default
       x Switch lights by layer
 
         OS Standard
-		KVM 1       KVM 2       KVM2        *
+		KVM1        KVM2        KVM2        COLOR PKR
 		VD LEFT     SHOW WINS   VD RIGHT
 		COPY        *           PASTE       ↻
 		*           *           *           *
@@ -77,6 +94,7 @@ enum custom_keycodes {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
+    // used for 10-key
 	[L_DEFAULT] = KEYMAP(
 		KC_BSPACE, KC_SLASH, KC_ASTERISK, KC_MINUS,
 		KC_7, KC_8, KC_9,
@@ -84,22 +102,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		KC_1, KC_2, KC_3, RESET,
 		KC_0, KC_DOT, KC_ENTER),
 
+    // used for OS-level commands
 	[L_1] = KEYMAP(
 		CKC_KVM_INPUT_1, CKC_KVM_INPUT_2, CKC_KVM_INPUT_3, SWIN(KC_C),
 		LWIN(LCTL(KC_LEFT)), LALT(LCTL(KC_TAB)), LWIN(LCTL(KC_RIGHT)),
-		LCTL(KC_C), LCTL(KC_V), KC_LSFT, KC_TRNS,
+		LCTL(KC_C), KC_TRNS, LCTL(KC_V), KC_TRNS,
 		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
 		KC_TRNS, KC_TRNS, MT(MOD_LSFT, KC_ENTER)),
 
+    // used for Lightroom
 	[L_2] = KEYMAP(
-		KC_CALC, KC_WWW_BACK, KC_WWW_FORWARD, KC_TRNS,
-		KC_TRNS, KC_TRNS, KC_TRNS,
-		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-		KC_SYSTEM_SLEEP, KC_SYSTEM_WAKE, KC_TRNS),
+		KC_G, KC_E, KC_D, C(KC_ENTER),              // view switching: grid, loupe, develop, slideshow
+		KC_F, KC_L, S(KC_TAB),                      // full screen, lights-out, show/hide panels
+		C(S(KC_C)), KC_COMMA, C(S(KC_V)), KC_RBRC,  // copy adjustments, prev adjustment, paste adjustment, rating up
+		KC_MINUS, KC_DOT, S(KC_EQUAL), KC_TRNS,     // lower value, next adjustment, raise value, unused
+		KC_LEFT, KC_RIGHT, KC_LBRC),                // previous photo, next photo, rating down
 
 	[L_3] = KEYMAP(
-		KC_C, KC_C, KC_TRNS, KC_TRNS,
+		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
 		KC_TRNS, KC_TRNS, KC_TRNS,
 		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
 		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
@@ -123,16 +143,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 *
 ***********************************************************************************************************************/
 
-// calculator
-const rgblight_segment_t PROGMEM glow_layer1[] = RGBLIGHT_LAYER_SEGMENTS(
+// OS commands layer
+const rgblight_segment_t PROGMEM glow_layer2[] = RGBLIGHT_LAYER_SEGMENTS(
 	{17, 2, 43, 255, 220}, // yellow
-	{19, 2, 160, 255, 200}, // blue
-	{21, 2, 85, 255, 220}, // green
+	{19, 2, 160, 255, 120}, // blue
+	{21, 2, 85, 255, 150}, // green
 	{23, 2, 0, 255, 160} // red
 );
-// layer 2
-const rgblight_segment_t PROGMEM glow_layer2[] = RGBLIGHT_LAYER_SEGMENTS(
-	{17, 8, 25, 255, 128}
+// Lightroom commands layer
+const rgblight_segment_t PROGMEM glow_layer3[] = RGBLIGHT_LAYER_SEGMENTS(
+	{17, 1, 160, 255, 25},
+	{18, 1, 160, 255, 75},
+	{19, 4, 160, 255, 153},
+	{23, 1, 160, 255, 75},
+	{24, 1, 160, 255, 25}
 );
 // dfu
 const rgblight_segment_t PROGMEM glow_reset[] = RGBLIGHT_LAYER_SEGMENTS(
@@ -140,7 +164,7 @@ const rgblight_segment_t PROGMEM glow_reset[] = RGBLIGHT_LAYER_SEGMENTS(
 );
 
 const rgblight_segment_t* const PROGMEM glow_layers[] = RGBLIGHT_LAYERS_LIST(
-    glow_layer1, glow_layer2, glow_reset
+    glow_layer2, glow_layer3, glow_reset
 );
 
 /*
@@ -170,7 +194,7 @@ void encoder_update_user(uint8_t index, bool clockwise) {
     else ENC_TRACKER--;
 
     layer_clear();
-    switch (ENC_TRACKER % 4) {
+    switch (ENC_TRACKER % 3) {
         case 0:
             layer_on(L_DEFAULT);
             break;
@@ -182,27 +206,13 @@ void encoder_update_user(uint8_t index, bool clockwise) {
             layer_on(L_2);
             rgblight_set_layer_state(GI_LAYER2, 1);
             break;
+
+        // disabled - change mod value above to enable
         case 3:
             layer_on(L_3);
             rgblight_set_layer_state(GI_RESET, 1);
             break;
     }
-
-    /*
-    if (index == 0) {
-        if (clockwise) {
-            tap_code(KC_VOLU);
-        } else {
-            tap_code(KC_VOLD);
-        }
-    } else if (index == 1) {
-        if (clockwise) {
-            tap_code(KC_DOWN);
-        } else {
-            tap_code(KC_UP);
-        }
-    }
-    */
 
 }
 
