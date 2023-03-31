@@ -1,0 +1,65 @@
+{
+    "name": "Pikatea Macropad GB4",
+    "vendorId": "0x5049",
+    "productId": "0x001B",
+    "customKeycodes": [
+      {"name": "Green",
+       "title": "Green",
+       "shortName": "RGB_USER_GREEN"
+      },
+      {"name": "Red",
+      "title": "Red",
+      "shortName": "RGB_USER_RED"
+      },
+      {"name": "Blue",
+      "title": "Blue",
+      "shortName": "RGB_USER_BLUE"
+      },
+      {"name": "White",
+       "title": "White",
+       "shortName": "RGB_USER_WHITE"
+      },
+      {"name": "Yellow",
+      "title": "Yellow",
+      "shortName": "RGB_USER_YELLOW"
+      },
+      {"name": "Orange",
+      "title": "Orange",
+      "shortName": "RGB_USER_ORANGE"
+      },
+     {"name": "Cyan",
+     "title": "Cyan",
+     "shortName": "RGB_USER_CYAN"
+     },
+     {"name": "Purple",
+     "title": "Purple",
+     "shortName": "RGB_USER_PURPLE"
+     }
+    ],
+    "lighting": "qmk_rgblight",
+    "matrix": { "rows": 2, "cols": 8 },
+    "layouts": {
+      "keymap": [
+        [
+            "0,0",
+            "0,1",
+            "0,2",
+            "0,3",
+            "0,4",
+            "0,5",
+            "0,6",
+            {
+                "x": 1
+            },
+            "0,7"
+        ],
+        [
+            {
+                "x": 7.5
+            },
+            "1,0",
+            "1,1"
+        ]
+      ]
+    }
+  }

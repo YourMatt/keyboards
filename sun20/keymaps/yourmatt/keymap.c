@@ -145,22 +145,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 // OS commands layer
 const rgblight_segment_t PROGMEM glow_layer2[] = RGBLIGHT_LAYER_SEGMENTS(
-	{17, 2, 43, 255, 220}, // yellow
-	{19, 2, 160, 255, 120}, // blue
-	{21, 2, 85, 255, 150}, // green
-	{23, 2, 0, 255, 160} // red
+    {17, 1, 85, 255, 140},  // green
+    {18, 1, 160, 255, 120}, // blue
+    {19, 4, 160, 255, 100}, // blue
+    {23, 1, 160, 255, 120}, // blue
+    {24, 1, 85, 255, 140}   // green
 );
 // Lightroom commands layer
 const rgblight_segment_t PROGMEM glow_layer3[] = RGBLIGHT_LAYER_SEGMENTS(
-	{17, 1, 160, 255, 25},
-	{18, 1, 160, 255, 75},
-	{19, 4, 160, 255, 153},
-	{23, 1, 160, 255, 75},
-	{24, 1, 160, 255, 25}
+	{17, 1, 160, 255, 25},  // blue
+	{18, 1, 160, 255, 75},  // blue
+	{19, 4, 160, 255, 153}, // blue
+	{23, 1, 160, 255, 75},  // blue
+	{24, 1, 160, 255, 25}   // blue
 );
 // dfu
 const rgblight_segment_t PROGMEM glow_reset[] = RGBLIGHT_LAYER_SEGMENTS(
-    {17, 8, 0, 255, 255}
+    {17, 8, 0, 255, 255}    // red
 );
 
 const rgblight_segment_t* const PROGMEM glow_layers[] = RGBLIGHT_LAYERS_LIST(
