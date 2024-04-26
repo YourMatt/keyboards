@@ -10,7 +10,10 @@
 #include "strings.c"
 
 /* TODO:
-
+Replace newlines with commas (include move up, end, select to start of next line, ctrl-h, tap, typing the comma in the replacement field, alt-a, esc, ctrl-a, ctrl-x)
+Special chars: ✓ ⋮ …
+No-reach -_+=
+Fancy zone select: Win Shift `
 */
 
 

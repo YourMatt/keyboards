@@ -10,6 +10,12 @@
 #include "strings.c"
 
 /* TODO:
+
+    Replace newlines with commas (include move up, end, select to start of next line, ctrl-h, tap, typing the comma in the replacement field, alt-a, esc, ctrl-a, ctrl-x)
+    Special chars: ✓ ⋮ …
+    No-reach -_+=
+    Fancy zone select: Win Shift `
+
     - Keymap
         - Attempt L3 combo keys for clockwise and counter-clockwise icons
         - Consider bottom left keys together as Home - More for muscle memory from old keyboard
