@@ -11,7 +11,6 @@
 
 /* TODO:
 
-    Replace newlines with commas (include move up, end, select to start of next line, ctrl-h, tap, typing the comma in the replacement field, alt-a, esc, ctrl-a, ctrl-x)
     No-reach -_+=
     Fancy zone select: Win Shift `
 
@@ -61,7 +60,8 @@ enum unicode_names {
     U_E_EYEROLL, U_E_JOY, U_E_KISS, U_E_LOVE, U_E_ROFL, U_E_SMILE, U_E_THINK
 };
 enum custom_keycodes {
-    CKC_PASS = SAFE_RANGE
+    CKC_PASS = SAFE_RANGE,
+    CKC_MACRO_LIST_TO_CSV
 };
 
 
@@ -271,7 +271,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [L_1] = LAYOUT_stagger(
         KC_GRAVE, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINUS, KC_EQUAL, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_4, KC_5, KC_6, KC_QUOTE, KC_TRNS,
+        CKC_MACRO_LIST_TO_CSV, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_4, KC_5, KC_6, KC_QUOTE, KC_TRNS,
         KC_TRNS, DYN_REC_START1, DYN_REC_START2, DYN_REC_STOP, KC_TRNS, KC_TRNS, KC_TRNS, KC_1, KC_2, KC_3, KC_BSLASH, KC_PGUP,
         KC_TRNS, DYN_MACRO_PLAY1, DYN_MACRO_PLAY2, KC_INSERT, KC_TAB, KC_0, OSL(L_3), KC_HOME, KC_PGDN, KC_END
     ),
@@ -705,6 +705,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case CKC_PASS:
             if (record->event.pressed) {
                 SEND_STRING(PASSWORD1);
+            }
+            return true;
+        case CKC_MACRO_LIST_TO_CSV:
+            if (record->event.pressed) {
+                // in Notepad, take a list of items and convert to a comma-separated list, then cut it to clipboard
+                // move up, end, select to start of next line, ctrl-h, tap, typing the comma in the replacement field, alt-a, esc, ctrl-a, ctrl-x
+                SEND_STRING(SS_TAP(X_UP) SS_TAP(X_END) SS_DOWN(X_LSFT) SS_TAP(X_RIGHT) SS_UP(X_LSFT));
+                SEND_STRING(SS_DOWN(X_LEFT_CTRL) "h" SS_UP(X_LEFT_CTRL));
+                SEND_STRING(SS_TAP(X_TAB) "," SS_DOWN(X_LALT) "a" SS_UP(X_LALT));
+                SEND_STRING(SS_TAP(X_ESC));
+                SEND_STRING(SS_DOWN(X_LEFT_CTRL) "a" SS_UP(X_LEFT_CTRL));
+                SEND_STRING(SS_DOWN(X_LEFT_CTRL) "x" SS_UP(X_LEFT_CTRL));
             }
             return true;
 
