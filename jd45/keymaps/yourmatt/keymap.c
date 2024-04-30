@@ -10,11 +10,9 @@
 #include "strings.c"
 
 /* TODO:
-No-reach -_+=
-Fancy zone select: Win Shift `
 Fractions like on Cajal
+Remove Ctrl Space for caps - Now using left space + right space
 */
-
 
 
 /***********************************************************************************************************************
@@ -98,6 +96,16 @@ const uint32_t PROGMEM unicode_map[] = {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
+    /* BASE LAYER
+       ╭───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────╮
+       │  Esc  │   q   │   w   │   e   │   r   │   t   │   y   │   u   │   i   │   o   │   p   │  [ {  │  ] }  │
+       ├───────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴───────┤
+       │  Ctrl   │   a   │   s   │   d   │   f   │   g   │   h   │   j   │   k   │   l   │  ; :  │    Enter    │
+       ├─────────┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬─────────┤
+       │    Shift    │   z   │   x   │   c   │   v   │   b   │   n   │   m   │  , <  │  . >  │  / ?  │  Shift  │
+       ╰─────────┬───┴───┬───┴─────┬─┴───────┼───────┴─────┬─┴───────┴───┬───┴─────┬─┴───────┼───────┼─────────╯
+                 │Layer1 │   Alt   │   Win   │  Backspace  │    Space    │  Menu   │   Alt   │Layer2 │
+                 ╰───────┴─────────┴─────────┴─────────────┴─────────────┴─────────┴─────────┴───────╯        */
     [L_DEFAULT] = LAYOUT(
         KC_ESC, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LEFT_BRACKET, KC_RIGHT_BRACKET,
         KC_LEFT_CTRL, KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SEMICOLON, KC_ENT,
@@ -105,13 +113,33 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TRNS, MO(L_1), KC_LALT, KC_LGUI, LT(L_4, KC_BACKSPACE), KC_SPC, KC_RGUI, KC_RALT, MO(L_2), KC_TRNS
     ),
 
+    /* LAYER 1 - HOLDING LEFT MOD
+       ╭───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────╮
+       │   `   │   1   │   2   │   3   │   4   │   5   │   6   │   7   │   8   │   9   │   0   │   -   │   =   │
+       ├───────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴───────┤
+       │ListToCSV│ColrPck│FncZons│       │       │       │       │   4   │   5   │   6   │   '   │             │
+       ├─────────┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬─────────┤
+       │             │McroRec│McroStp│McroPly│       │       │       │   1   │   2   │   3   │   \   │         │
+       ╰─────────┬───┴───┬───┴─────┬─┴───────┼───────┴─────┬─┴───────┴───┬───┴─────┬─┴───────┼───────┼─────────╯
+                 │ ░░░░░ │  Home   │         │   Insert    │     Tab     │    0    │  PgDn   │Layer3 │
+                 ╰───────┴─────────┴─────────┴─────────────┴─────────────┴─────────┴─────────┴───────╯        */
     [L_1] = LAYOUT(
         KC_GRAVE, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINUS, KC_EQUAL,
-        CKC_MACRO_LIST_TO_CSV, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_4, KC_5, KC_6, KC_QUOTE, KC_TRNS,
+        CKC_MACRO_LIST_TO_CSV, SWIN(KC_C), LWIN(KC_GRAVE), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_4, KC_5, KC_6, KC_QUOTE, KC_TRNS,
         KC_TRNS, QK_DYNAMIC_MACRO_RECORD_START_1, QK_DYNAMIC_MACRO_RECORD_STOP, QK_DYNAMIC_MACRO_PLAY_1, KC_TRNS, KC_TRNS, KC_TRNS, KC_1, KC_2, KC_3, KC_BACKSLASH, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_HOME, KC_TRNS, KC_INSERT, KC_TAB, KC_0, KC_PGDN, OSL(L_3), KC_TRNS
     ),
 
+    /* LAYER 2 - HOLDING RIGHT MOD
+       ╭───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────╮
+       │ Caps  │  F1   │  F2   │  F3   │  F4   │  F5   │  F6   │  F7   │  F8   │  F9   │  F10  │  F11  │  F12  │
+       ├───────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴───────┤
+       │         │   !   │   @   │   #   │   $   │   %   │       │       │  Up   │       │ Pause │             │
+       ├─────────┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬─────────┤
+       │             │   ^   │   &   │   *   │   (   │   )   │       │ Left  │ Right │       │ PtScr │  Pass   │
+       ╰─────────┬───┴───┬───┴─────┬─┴───────┼───────┴─────┬─┴───────┴───┬───┴─────┬─┴───────┼───────┼─────────╯
+                 │Layer3 │  PgUp   │         │   Delete    │             │  Down   │   End   │ ░░░░░ │
+                 ╰───────┴─────────┴─────────┴─────────────┴─────────────┴─────────┴─────────┴───────╯        */
     [L_2] = LAYOUT(
         KC_CAPS_LOCK, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12,
         KC_TRNS, KC_EXCLAIM, KC_AT, KC_HASH, KC_DOLLAR, KC_PERCENT, KC_TRNS, KC_TRNS, KC_UP, KC_TRNS, KC_PAUSE, KC_TRNS,
@@ -119,6 +147,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TRNS, OSL(L_3), KC_PGUP, KC_TRNS, KC_DEL, KC_TRNS, KC_DOWN, KC_END, KC_TRNS, KC_TRNS
     ),
 
+    /* LAYER 3 - ONE-SHOT KEY AFTER PRESSING LEFT AND RIGHT MODS
+       ╭───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────╮
+       │   ☠   │   ★   │   ☆  │       │   ®   │       │       │       │       │       │   ÷   │   ⏶   │   ±   │
+       ├───────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴───────┤
+       │   🙄    │   ‽   │       │   °   │   ¢   │       │       │       │   ↑   │       │   ⏴  │      ⏵      │
+       ├─────────┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬─────────┤
+       │     🤔      │       │   ×   │   ©   │   ✓   │   •   │       │   ←   │   →   │   …   │   ⏷  │    ⋮     │
+       ╰─────────┬───┴───┬───┴─────┬─┴───────┼───────┴─────┬─┴───────┴───┬───┴─────┬─┴───────┼───────┼─────────╯
+                 │       │   😘    │   😍    │     😂     │      😀     │    ↓    │   🤣    │       │
+                 ╰───────┴─────────┴─────────┴─────────────┴─────────────┴─────────┴─────────┴───────╯        */
     [L_3] = LAYOUT(
         X(U_SKULL), X(U_STAR_FILLED), X(U_STAR_OUTLINE), KC_TRNS, X(U_REG), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, X(U_DIVIDE), X(U_TRIANGLE_UP), X(U_PLUSMINUS),
         X(U_E_EYEROLL), X(U_INTERROBANG), KC_TRNS, X(U_DEGREE), X(U_CENTS), KC_TRNS, KC_TRNS, KC_TRNS, X(U_ARROW_UP), KC_TRNS, X(U_TRIANGLE_LEFT), X(U_TRIANGLE_RIGHT),
@@ -126,11 +164,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TRNS, KC_TRNS, X(U_E_KISS), X(U_E_LOVE), X(U_E_JOY), X(U_E_SMILE), X(U_ARROW_DOWN), X(U_E_ROFL), KC_TRNS, KC_TRNS
     ),
 
+    /* LAYER 4 - HOLDING LEFT SPACEBAR
+       ╭───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────╮
+       │       │       │       │       │       │       │       │   -   │   _   │   +   │   =   │       │       │
+       ├───────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴───────┤
+       │         │       │       │       │       │       │ Left  │ Down  │  Up   │ Right │       │             │
+       ├─────────┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬─────────┤
+       │             │       │       │       │       │       │LeftWrd│ PgDn  │ PgUp  │RghtWrd│       │         │
+       ╰─────────┬───┴───┬───┴─────┬─┴───────┼───────┴─────┬─┴───────┴───┬───┴─────┬─┴───────┼───────┼─────────╯
+                 │       │         │         │ ░░░░░░░░░░░ │    Caps     │         │         │       │
+                 ╰───────┴─────────┴─────────┴─────────────┴─────────────┴─────────┴─────────┴───────╯        */
     [L_4] = LAYOUT(
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, LCTL(KC_LEFT), KC_PGDN, KC_PGUP, LCTL(KC_RIGHT), KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_MINUS, KC_UNDERSCORE, KC_PLUS, KC_EQUAL, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_HOME, LCTL(KC_END), LCTL(KC_HOME), KC_END, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, LCTL(KC_LEFT), KC_PGDN, KC_PGUP, LCTL(KC_RIGHT), KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_CAPS_LOCK, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
     )
 
 };
