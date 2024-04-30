@@ -12,7 +12,6 @@
 /* TODO:
 
     Replace newlines with commas (include move up, end, select to start of next line, ctrl-h, tap, typing the comma in the replacement field, alt-a, esc, ctrl-a, ctrl-x)
-    Special chars: ✓ ⋮ …
     No-reach -_+=
     Fancy zone select: Win Shift `
 
@@ -56,8 +55,8 @@ enum glow_indexes {
     GI_MACRO1, GI_MACRO2, GI_FN1, GI_FN2, GI_CAPS, GI_SHIFT, GI_CTL, GI_RESET
 };
 enum unicode_names {
-    U_ARROW_CCW, U_ARROW_CW, U_ARROW_DOWN, U_ARROW_LEFT, U_ARROW_RIGHT, U_ARROW_UP,
-    U_BULLET, U_CENTS, U_COPY, U_DEGREE, U_DIVIDE, U_ELLIPSIS, U_INTERROBANG, U_MICRO, U_PLUSMINUS, U_REG, U_SKULL,
+    U_ARROW_CCW, U_ARROW_CW, U_ARROW_DOWN, U_ARROW_LEFT, U_ARROW_RIGHT, U_ARROW_UP, U_BULLET, U_CENTS, U_CHECKMARK,
+    U_COPY, U_DEGREE, U_DIVIDE, U_ELLIPSIS, U_ELLIPSIS_VERT, U_INTERROBANG, U_MICRO, U_PLUSMINUS, U_REG, U_SKULL,
     U_STAR_FILLED, U_STAR_OUTLINE, U_TIMES, U_TRIANGLE_DOWN, U_TRIANGLE_LEFT, U_TRIANGLE_RIGHT, U_TRIANGLE_UP,
     U_E_EYEROLL, U_E_JOY, U_E_KISS, U_E_LOVE, U_E_ROFL, U_E_SMILE, U_E_THINK
 };
@@ -76,10 +75,10 @@ enum custom_keycodes {
 ***********************************************************************************************************************/
 
 /*  Remaining layer-3 characters:
-    e g h i j k l n o s t u v w y z ,
+    e g h i j k l n o s t u w y z
     That includes top row Y-P and 2nd row G-L. Might block off this section for macros. If so that, leaves the
     following for characters:
-    e n s v z ,
+    e n s z
 */
 
 const uint32_t PROGMEM unicode_map[] = {
@@ -93,10 +92,12 @@ const uint32_t PROGMEM unicode_map[] = {
     [U_ARROW_UP] = 0x2191,          // ↑	up arrow
     [U_BULLET] = 0x2022,            // •	b
     [U_CENTS] = 0x00A2,             // ¢	f
+    [U_CHECKMARK] = 0x2713          // ✓	v
     [U_COPY] = 0x00A9,              // ©	c
     [U_DEGREE] = 0x00B0,            // °	d
     [U_DIVIDE] = 0x00F7,            // ÷	p
     [U_ELLIPSIS] = 0x2026,          // …	.
+    [U_ELLIPSIS_VERT] = 0x22EE      // ⋮	,
     [U_INTERROBANG] = 0x203D,       // ‽	a
     [U_MICRO] = 0x00B5,             // µ	m
     [U_PLUSMINUS] = 0x00B1,         // ±	]
@@ -285,7 +286,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_3] = LAYOUT_stagger(
         X(U_SKULL), X(U_STAR_FILLED), X(U_STAR_OUTLINE), KC_TRNS, X(U_REG), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, X(U_DIVIDE), X(U_TRIANGLE_UP), X(U_PLUSMINUS), RESET,
         X(U_E_EYEROLL), X(U_INTERROBANG), KC_TRNS, X(U_DEGREE), X(U_CENTS), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, X(U_TRIANGLE_LEFT), X(U_TRIANGLE_RIGHT),
-        X(U_E_THINK), KC_TRNS, X(U_TIMES), X(U_COPY), KC_TRNS, X(U_BULLET), KC_TRNS, X(U_MICRO), KC_TRNS, X(U_ELLIPSIS), X(U_TRIANGLE_DOWN), X(U_ARROW_UP),
+        X(U_E_THINK), KC_TRNS, X(U_TIMES), X(U_COPY), X(U_CHECKMARK), X(U_BULLET), KC_TRNS, X(U_MICRO), X(U_ELLIPSIS_VERT), X(U_ELLIPSIS), X(U_TRIANGLE_DOWN), X(U_ARROW_UP),
         KC_TRNS, X(U_E_KISS), X(U_E_LOVE), X(U_E_JOY), X(U_E_SMILE), X(U_E_ROFL), KC_TRNS, X(U_ARROW_LEFT), X(U_ARROW_DOWN), X(U_ARROW_RIGHT)
     ),
 
