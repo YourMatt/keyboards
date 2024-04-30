@@ -10,7 +10,6 @@
 #include "strings.c"
 
 /* TODO:
-Fractions like on Cajal
 Remove Ctrl Space for caps - Now using left space + right space
 */
 
@@ -90,6 +89,136 @@ const uint32_t PROGMEM unicode_map[] = {
 
 /***********************************************************************************************************************
 *
+*   COMBOS
+*
+***********************************************************************************************************************/
+
+enum combo_events {
+    C_FRAC_1_2,
+    C_FRAC_1_3, C_FRAC_2_3,
+    C_FRAC_1_4, C_FRAC_3_4,
+    C_FRAC_1_5,
+    C_FRAC_2_5, C_FRAC_3_5, C_FRAC_4_5,
+    C_FRAC_1_6, C_FRAC_5_6,
+    C_FRAC_1_7,
+    C_FRAC_1_8, C_FRAC_3_8, C_FRAC_5_8, C_FRAC_7_8,
+    C_FRAC_1_9,
+    C_FRAC_1_10,
+    C_FRAC_0_3
+};
+
+const uint16_t PROGMEM combo_frac_1_2[] = {KC_1, KC_2, COMBO_END};
+const uint16_t PROGMEM combo_frac_1_3[] = {KC_1, KC_3, COMBO_END};
+const uint16_t PROGMEM combo_frac_2_3[] = {KC_2, KC_3, COMBO_END};
+const uint16_t PROGMEM combo_frac_1_4[] = {KC_1, KC_4, COMBO_END};
+const uint16_t PROGMEM combo_frac_3_4[] = {KC_3, KC_4, COMBO_END};
+const uint16_t PROGMEM combo_frac_1_5[] = {KC_1, KC_5, COMBO_END};
+const uint16_t PROGMEM combo_frac_2_5[] = {KC_2, KC_5, COMBO_END};
+const uint16_t PROGMEM combo_frac_3_5[] = {KC_3, KC_5, COMBO_END};
+const uint16_t PROGMEM combo_frac_4_5[] = {KC_4, KC_5, COMBO_END};
+const uint16_t PROGMEM combo_frac_1_6[] = {KC_1, KC_6, COMBO_END};
+const uint16_t PROGMEM combo_frac_5_6[] = {KC_5, KC_6, COMBO_END};
+const uint16_t PROGMEM combo_frac_1_7[] = {KC_1, KC_7, COMBO_END};
+const uint16_t PROGMEM combo_frac_1_8[] = {KC_1, KC_8, COMBO_END};
+const uint16_t PROGMEM combo_frac_3_8[] = {KC_3, KC_8, COMBO_END};
+const uint16_t PROGMEM combo_frac_5_8[] = {KC_5, KC_8, COMBO_END};
+const uint16_t PROGMEM combo_frac_7_8[] = {KC_7, KC_8, COMBO_END};
+const uint16_t PROGMEM combo_frac_1_9[] = {KC_1, KC_9, COMBO_END};
+const uint16_t PROGMEM combo_frac_1_10[] = {KC_1, KC_0, COMBO_END};
+const uint16_t PROGMEM combo_frac_0_3[] = {KC_0, KC_3, COMBO_END};
+
+combo_t key_combos[] = {
+    [C_FRAC_1_2] = COMBO_ACTION(combo_frac_1_2),
+    [C_FRAC_1_3] = COMBO_ACTION(combo_frac_1_3),
+    [C_FRAC_2_3] = COMBO_ACTION(combo_frac_2_3),
+    [C_FRAC_1_4] = COMBO_ACTION(combo_frac_1_4),
+    [C_FRAC_3_4] = COMBO_ACTION(combo_frac_3_4),
+    [C_FRAC_1_5] = COMBO_ACTION(combo_frac_1_5),
+    [C_FRAC_2_5] = COMBO_ACTION(combo_frac_2_5),
+    [C_FRAC_3_5] = COMBO_ACTION(combo_frac_3_5),
+    [C_FRAC_4_5] = COMBO_ACTION(combo_frac_4_5),
+    [C_FRAC_1_6] = COMBO_ACTION(combo_frac_1_6),
+    [C_FRAC_5_6] = COMBO_ACTION(combo_frac_5_6),
+    [C_FRAC_1_7] = COMBO_ACTION(combo_frac_1_7),
+    [C_FRAC_1_8] = COMBO_ACTION(combo_frac_1_8),
+    [C_FRAC_3_8] = COMBO_ACTION(combo_frac_3_8),
+    [C_FRAC_5_8] = COMBO_ACTION(combo_frac_5_8),
+    [C_FRAC_7_8] = COMBO_ACTION(combo_frac_7_8),
+    [C_FRAC_1_9] = COMBO_ACTION(combo_frac_1_9),
+    [C_FRAC_1_10] = COMBO_ACTION(combo_frac_1_10),
+    [C_FRAC_0_3] = COMBO_ACTION(combo_frac_0_3)
+};
+
+void process_combo_event(uint16_t combo_index, bool pressed) {
+
+    if (!pressed) return;
+
+    switch (combo_index) {
+        case C_FRAC_1_2:
+            send_unicode_string("½");
+            break;
+        case C_FRAC_1_3:
+            send_unicode_string("⅓");
+            break;
+        case C_FRAC_2_3:
+            send_unicode_string("⅔");
+            break;
+        case C_FRAC_1_4:
+            send_unicode_string("¼");
+            break;
+        case C_FRAC_3_4:
+            send_unicode_string("¾");
+            break;
+        case C_FRAC_1_5:
+            send_unicode_string("⅕");
+            break;
+        case C_FRAC_2_5:
+            send_unicode_string("⅖");
+            break;
+        case C_FRAC_3_5:
+            send_unicode_string("⅗");
+            break;
+        case C_FRAC_4_5:
+            send_unicode_string("⅘");
+            break;
+        case C_FRAC_1_6:
+            send_unicode_string("⅙");
+            break;
+        case C_FRAC_5_6:
+            send_unicode_string("⅚");
+            break;
+        case C_FRAC_1_7:
+            send_unicode_string("⅐");
+            break;
+        case C_FRAC_1_8:
+            send_unicode_string("⅛");
+            break;
+        case C_FRAC_3_8:
+            send_unicode_string("⅜");
+            break;
+        case C_FRAC_5_8:
+            send_unicode_string("⅝");
+            break;
+        case C_FRAC_7_8:
+            send_unicode_string("⅞");
+            break;
+        case C_FRAC_1_9:
+            send_unicode_string("⅑");
+            break;
+        case C_FRAC_1_10:
+            send_unicode_string("⅒");
+            break;
+        case C_FRAC_0_3:
+            send_unicode_string("↉");
+            break;
+    }
+
+}
+
+
+
+/***********************************************************************************************************************
+*
 *   KEYMAP
 *
 ***********************************************************************************************************************/
@@ -98,11 +227,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     /* BASE LAYER
        ╭───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────╮
-       │  Esc  │   q   │   w   │   e   │   r   │   t   │   y   │   u   │   i   │   o   │   p   │  [ {  │  ] }  │
+       │  Esc  │  q Q  │  w W  │  e E  │  r R  │  t T  │  y Y  │  u U  │  i I  │  o O  │  p P  │  [ {  │  ] }  │
        ├───────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴───────┤
-       │  Ctrl   │   a   │   s   │   d   │   f   │   g   │   h   │   j   │   k   │   l   │  ; :  │    Enter    │
+       │  Ctrl   │  a A  │  s S  │  d D  │  f F  │  g G  │  h H  │  j J  │  k K  │  l L  │  ; :  │    Enter    │
        ├─────────┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬─────────┤
-       │    Shift    │   z   │   x   │   c   │   v   │   b   │   n   │   m   │  , <  │  . >  │  / ?  │  Shift  │
+       │    Shift    │  z Z  │  x X  │  c C  │  v V  │  b B  │  n N  │  m M  │  , <  │  . >  │  / ?  │  Shift  │
        ╰─────────┬───┴───┬───┴─────┬─┴───────┼───────┴─────┬─┴───────┴───┬───┴─────┬─┴───────┼───────┼─────────╯
                  │Layer1 │   Alt   │   Win   │  Backspace  │    Space    │  Menu   │   Alt   │Layer2 │
                  ╰───────┴─────────┴─────────┴─────────────┴─────────────┴─────────┴─────────┴───────╯        */
@@ -114,18 +243,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     /* LAYER 1 - HOLDING LEFT MOD
+       Additional features: 1) Fractions by pressing two numbers together
+                            2) Superscript numbers by holding shift and pressing number
+                            3) Subscript numbers by holding control and pressing number (plus backslash for ⁄)
        ╭───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────╮
-       │   `   │   1   │   2   │   3   │   4   │   5   │   6   │   7   │   8   │   9   │   0   │   -   │   =   │
+       │  ` ~  │   1   │   2   │   3   │   4   │   5   │   6   │   7   │   8   │   9   │   0   │  - _  │  = +  │
        ├───────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴───────┤
-       │ListToCSV│ColrPck│FncZons│       │       │       │       │   4   │   5   │   6   │   '   │             │
+       │         │Lst2CSV│ColrPck│FncZons│       │       │       │   4   │   5   │   6   │  ' "  │             │
        ├─────────┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬─────────┤
-       │             │McroRec│McroStp│McroPly│       │       │       │   1   │   2   │   3   │   \   │         │
+       │             │McroRec│McroStp│McroPly│       │       │       │   1   │   2   │   3   │  \ |  │         │
        ╰─────────┬───┴───┬───┴─────┬─┴───────┼───────┴─────┬─┴───────┴───┬───┴─────┬─┴───────┼───────┼─────────╯
                  │ ░░░░░ │  Home   │         │   Insert    │     Tab     │    0    │  PgDn   │Layer3 │
                  ╰───────┴─────────┴─────────┴─────────────┴─────────────┴─────────┴─────────┴───────╯        */
     [L_1] = LAYOUT(
         KC_GRAVE, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINUS, KC_EQUAL,
-        CKC_MACRO_LIST_TO_CSV, SWIN(KC_C), LWIN(KC_GRAVE), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_4, KC_5, KC_6, KC_QUOTE, KC_TRNS,
+        KC_TRNS, CKC_MACRO_LIST_TO_CSV, SWIN(KC_C), LWIN(KC_GRAVE), KC_TRNS, KC_TRNS, KC_TRNS, KC_4, KC_5, KC_6, KC_QUOTE, KC_TRNS,
         KC_TRNS, QK_DYNAMIC_MACRO_RECORD_START_1, QK_DYNAMIC_MACRO_RECORD_STOP, QK_DYNAMIC_MACRO_PLAY_1, KC_TRNS, KC_TRNS, KC_TRNS, KC_1, KC_2, KC_3, KC_BACKSLASH, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_HOME, KC_TRNS, KC_INSERT, KC_TAB, KC_0, KC_PGDN, OSL(L_3), KC_TRNS
     ),
@@ -184,6 +316,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 
+
 /***********************************************************************************************************************
 *
 *   STATICS
@@ -192,6 +325,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 // each are set to true when holding the related key
 static bool H_LCTRL = false;
+static bool H_SHIFT = false;
+
 
 
 /***********************************************************************************************************************
@@ -204,33 +339,102 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     switch (keycode) {
 
+        // hold status of press for ctrl macros
         case KC_LEFT_CTRL:
-
-            // hold status of press for ctrl macros
             H_LCTRL = record->event.pressed;
-
             return true;
-        case KC_SPC:
 
-            // set caps lock for ctrl+space
+        // hold status of press for superscript numbers
+        case KC_LEFT_SHIFT:
+            H_SHIFT = record->event.pressed;
+            return true;
+
+        // set caps lock for ctrl+space
+        case KC_SPC:
             if (record->event.pressed) {
                 if (H_LCTRL) {
                     register_code(KC_CAPS_LOCK);
                     return false;
                 }
             }
-
             return true;
+
+        // set super and subscript for all numbers
+        case KC_1:
+            if (record->event.pressed) {
+                if (H_SHIFT) { send_unicode_string("¹"); return false; }
+                else if (H_LCTRL) { send_unicode_string("₁"); return false; }
+            }
+            return true;
+        case KC_2:
+            if (record->event.pressed) {
+                if (H_SHIFT) { send_unicode_string("²"); return false; }
+                else if (H_LCTRL) { send_unicode_string("₂"); return false; }
+            }
+            return true;
+        case KC_3:
+            if (record->event.pressed) {
+                if (H_SHIFT) { send_unicode_string("³"); return false; }
+                else if (H_LCTRL) { send_unicode_string("₃"); return false; }
+            }
+            return true;
+        case KC_4:
+            if (record->event.pressed) {
+                if (H_SHIFT) { send_unicode_string("⁴"); return false; }
+                else if (H_LCTRL) { send_unicode_string("₄"); return false; }
+            }
+            return true;
+        case KC_5:
+            if (record->event.pressed) {
+                if (H_SHIFT) { send_unicode_string("⁵"); return false; }
+                else if (H_LCTRL) { send_unicode_string("₅"); return false; }
+            }
+            return true;
+        case KC_6:
+            if (record->event.pressed) {
+                if (H_SHIFT) { send_unicode_string("⁶"); return false; }
+                else if (H_LCTRL) { send_unicode_string("₆"); return false; }
+            }
+            return true;
+        case KC_7:
+            if (record->event.pressed) {
+                if (H_SHIFT) { send_unicode_string("⁷"); return false; }
+                else if (H_LCTRL) { send_unicode_string("₇"); return false; }
+            }
+            return true;
+        case KC_8:
+            if (record->event.pressed) {
+                if (H_SHIFT) { send_unicode_string("⁸"); return false; }
+                else if (H_LCTRL) { send_unicode_string("₈"); return false; }
+            }
+            return true;
+        case KC_9:
+            if (record->event.pressed) {
+                if (H_SHIFT) { send_unicode_string("⁹"); return false; }
+                else if (H_LCTRL) { send_unicode_string("₉"); return false; }
+            }
+            return true;
+        case KC_0:
+            if (record->event.pressed) {
+                if (H_SHIFT) { send_unicode_string("⁰"); return false; }
+                else if (H_LCTRL) { send_unicode_string("₀"); return false; }
+            }
+            return true;
+        case KC_BACKSLASH:
+            if (record->event.pressed && H_LCTRL) { send_unicode_string("⁄"); return false; }
+            return true;
+
         // custom keycodes
         case CKC_PASS:
             if (record->event.pressed) {
                 SEND_STRING(PASSWORD1);
             }
             return true;
+
+        // in Notepad, take a list of items and convert to a comma-separated list, then cut it to clipboard
+        // move up, end, select to start of next line, ctrl-h, tap, typing the comma in the replacement field, alt-a, esc, ctrl-a, ctrl-x
         case CKC_MACRO_LIST_TO_CSV:
             if (record->event.pressed) {
-                // in Notepad, take a list of items and convert to a comma-separated list, then cut it to clipboard
-                // move up, end, select to start of next line, ctrl-h, tap, typing the comma in the replacement field, alt-a, esc, ctrl-a, ctrl-x
                 SEND_STRING(SS_TAP(X_UP) SS_TAP(X_END) SS_DOWN(X_LSFT) SS_TAP(X_RIGHT) SS_UP(X_LSFT));
                 SEND_STRING(SS_DOWN(X_LEFT_CTRL) "h" SS_UP(X_LEFT_CTRL));
                 SEND_STRING(SS_TAP(X_TAB) "," SS_DOWN(X_LALT) "a" SS_UP(X_LALT));

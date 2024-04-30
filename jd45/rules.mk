@@ -15,7 +15,7 @@ BOOTLOADER = atmel-dfu
 #   comment out to disable the options.
 #
 BOOTMAGIC_ENABLE = yes	# Virtual DIP switch configuration
-MOUSEKEY_ENABLE = yes	# Mouse keys
+MOUSEKEY_ENABLE = no	# Mouse keys
 EXTRAKEY_ENABLE = yes	# Audio control and System control
 CONSOLE_ENABLE = yes	# Console for debug
 COMMAND_ENABLE = yes	# Commands for debug and configuration
@@ -28,3 +28,4 @@ UNICODE_COMMON = yes	# Unicode
 UNICODEMAP_ENABLE = yes # Unicode
 DYNAMIC_MACRO_ENABLE = yes
 BLUETOOTH_ENABLE = no	# Enable Bluetooth with the Adafruit EZ-Key HID
+COMBO_ENABLE = yes      # Enable chording

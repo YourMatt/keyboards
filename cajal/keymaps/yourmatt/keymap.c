@@ -13,6 +13,8 @@
 
     No-reach -_+=
     Fancy zone select: Win Shift `
+    Remove Ctrl Space for caps and replace with left space + right space
+    Fix subscript numbers by using fn-ctl instead of fn-alt
 
     - Keymap
         - Attempt L3 combo keys for clockwise and counter-clockwise icons
@@ -24,6 +26,7 @@
         - Set glow state for right-shift - Not working likely due to use MT with mod_rsft - Explanation is that
           process_record_user is not called for mod-tap and instead uses register_code directly - May not be able to fix
           this issue
+        - Lighten left and right sides in same way lightened LEDs under the arrows
     - Layers
         - Consider application-specific shortcuts
         - Add pre-recorded macros for layer 3 under right hand
