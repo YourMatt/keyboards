@@ -95,12 +95,12 @@ const uint32_t PROGMEM unicode_map[] = {
     [U_ARROW_UP] = 0x2191,          // ↑	up arrow
     [U_BULLET] = 0x2022,            // •	b
     [U_CENTS] = 0x00A2,             // ¢	f
-    [U_CHECKMARK] = 0x2713          // ✓	v
+    [U_CHECKMARK] = 0x2713,         // ✓	v
     [U_COPY] = 0x00A9,              // ©	c
     [U_DEGREE] = 0x00B0,            // °	d
     [U_DIVIDE] = 0x00F7,            // ÷	p
     [U_ELLIPSIS] = 0x2026,          // …	.
-    [U_ELLIPSIS_VERT] = 0x22EE      // ⋮	,
+    [U_ELLIPSIS_VERT] = 0x22EE,     // ⋮	,
     [U_INTERROBANG] = 0x203D,       // ‽	a
     [U_MICRO] = 0x00B5,             // µ	m
     [U_PLUSMINUS] = 0x00B1,         // ±	]
@@ -266,28 +266,28 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [L_DEFAULT] = LAYOUT_stagger(
-        KC_ESC, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRACKET, KC_RBRACKET, RGB_TOG,
-        KC_LCTRL, KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCOLON, KC_ENT,
+        KC_ESC, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LEFT_BRACKET, KC_RIGHT_BRACKET, RGB_TOG,
+        KC_LEFT_CTRL, KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SEMICOLON, KC_ENT,
         KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, MT(MOD_RSFT, KC_SLASH), KC_UP,
-        MO(L_1), KC_LALT, KC_LGUI, LT(L_4, KC_BSPACE), KC_SPACE, KC_RALT, MO(L_2), KC_LEFT, KC_DOWN, KC_RIGHT
+        MO(L_1), KC_LALT, KC_LGUI, LT(L_4, KC_BACKSPACE), KC_SPACE, KC_RALT, MO(L_2), KC_LEFT, KC_DOWN, KC_RIGHT
     ),
 
     [L_1] = LAYOUT_stagger(
         KC_GRAVE, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINUS, KC_EQUAL, KC_TRNS,
         CKC_MACRO_LIST_TO_CSV, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_4, KC_5, KC_6, KC_QUOTE, KC_TRNS,
-        KC_TRNS, DYN_REC_START1, DYN_REC_START2, DYN_REC_STOP, KC_TRNS, KC_TRNS, KC_TRNS, KC_1, KC_2, KC_3, KC_BSLASH, KC_PGUP,
-        KC_TRNS, DYN_MACRO_PLAY1, DYN_MACRO_PLAY2, KC_INSERT, KC_TAB, KC_0, OSL(L_3), KC_HOME, KC_PGDN, KC_END
+        KC_TRNS, QK_DYNAMIC_MACRO_RECORD_START_1, QK_DYNAMIC_MACRO_RECORD_START_2, QK_DYNAMIC_MACRO_RECORD_STOP, KC_TRNS, KC_TRNS, KC_TRNS, KC_1, KC_2, KC_3, KC_BACKSLASH, KC_PGUP,
+        KC_TRNS, QK_DYNAMIC_MACRO_PLAY_1, QK_DYNAMIC_MACRO_PLAY_2, KC_INSERT, KC_TAB, KC_0, OSL(L_3), KC_HOME, KC_PGDN, KC_END
     ),
 
     [L_2] = LAYOUT_stagger(
-        KC_CAPSLOCK, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_TRNS,
+        KC_CAPS_LOCK, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_TRNS,
         KC_TRNS, KC_EXCLAIM, KC_AT, KC_HASH, KC_DOLLAR, KC_PERCENT, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_CIRCUMFLEX, KC_AMPERSAND, KC_ASTERISK, KC_LEFT_PAREN, KC_RIGHT_PAREN, KC_TRNS, KC_TRNS, RGB_SAD, RGB_SAI, CKC_PASS, KC_TRNS,
         OSL(L_3), KC_TRNS, KC_TRNS, KC_DELETE, KC_TRNS, KC_END, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
     ),
 
     [L_3] = LAYOUT_stagger(
-        X(U_SKULL), X(U_STAR_FILLED), X(U_STAR_OUTLINE), KC_TRNS, X(U_REG), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, X(U_DIVIDE), X(U_TRIANGLE_UP), X(U_PLUSMINUS), RESET,
+        X(U_SKULL), X(U_STAR_FILLED), X(U_STAR_OUTLINE), KC_TRNS, X(U_REG), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, X(U_DIVIDE), X(U_TRIANGLE_UP), X(U_PLUSMINUS), QK_REBOOT,
         X(U_E_EYEROLL), X(U_INTERROBANG), KC_TRNS, X(U_DEGREE), X(U_CENTS), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, X(U_TRIANGLE_LEFT), X(U_TRIANGLE_RIGHT),
         X(U_E_THINK), KC_TRNS, X(U_TIMES), X(U_COPY), X(U_CHECKMARK), X(U_BULLET), KC_TRNS, X(U_MICRO), X(U_ELLIPSIS_VERT), X(U_ELLIPSIS), X(U_TRIANGLE_DOWN), X(U_ARROW_UP),
         KC_TRNS, X(U_E_KISS), X(U_E_LOVE), X(U_E_JOY), X(U_E_SMILE), X(U_E_ROFL), KC_TRNS, X(U_ARROW_LEFT), X(U_ARROW_DOWN), X(U_ARROW_RIGHT)
@@ -389,7 +389,7 @@ bool led_update_user(led_t led_state) {
 ***********************************************************************************************************************/
 
 // static uint8_t ENC_TRACKER = 0;
-void encoder_update_user(uint8_t index, bool ccw) {
+bool encoder_update_user(uint8_t index, bool ccw) {
 
     /*
     // TEMPORARILY UPDATED TO CYCLE THROUGH LEDS WHILE TESTING LIGHT ISOLATION ON PHYSICAL BOARD
@@ -461,6 +461,8 @@ void encoder_update_user(uint8_t index, bool ccw) {
             break;
 
     }
+
+    return false;
 
 }
 
@@ -576,7 +578,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
 
             return true;
-        case KC_LCTRL:
+        case KC_LEFT_CTRL:
 
             // hold status of press for ctrl macros
             H_LCTRL = record->event.pressed;
@@ -609,20 +611,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
             // set caps lock for ctrl+space
             if (record->event.pressed) {
-                if (H_LCTRL) {
-                    register_code(KC_CAPSLOCK);
+                if (KC_LEFT_CTRL) {
+                    register_code(KC_CAPS_LOCK);
                     return false;
                 }
             }
 
             return true;
-        case DYN_REC_START1:
+        case QK_DYNAMIC_MACRO_RECORD_START_1:
             rgblight_set_layer_state(GI_MACRO1, 1);
             return true;
-        case DYN_REC_START2:
+        case QK_DYNAMIC_MACRO_RECORD_START_2:
             rgblight_set_layer_state(GI_MACRO2, 1);
             return true;
-        case DYN_REC_STOP:
+        case QK_DYNAMIC_MACRO_RECORD_STOP:
             rgblight_set_layer_state(GI_MACRO1, 0);
             rgblight_set_layer_state(GI_MACRO1, 0);
             return true;
@@ -688,12 +690,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 else if (H_L1_ALT) { send_unicode_string("₀"); return false; }
             }
             return true;
-        case KC_BSLASH:
+        case KC_BACKSLASH:
             if (record->event.pressed && H_L1_ALT) { send_unicode_string("⁄"); return false; }
             return true;
 
         // dfu
-        case RESET:
+        case QK_REBOOT:
 
             // turn off all layer lights
             rgblight_set_layer_state(GI_FN1, 0);

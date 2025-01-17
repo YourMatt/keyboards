@@ -57,6 +57,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define UNICODE_SELECTED_MODES UNICODE_MODE_WINCOMPOSE
 
+/* set time where tap is considered a hold - default was 200 and caused a lot of unrecognized holds */
+#define TAPPING_TERM 100
+
 /*
  * Feature disable options
  *  These options are also useful to firmware size reduction.

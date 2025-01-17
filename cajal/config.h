@@ -69,7 +69,7 @@
 // may need following for setting macro record to also stop recording, but removed when running example code caused an error
 //#define DYNAMIC_MACRO_USER_CALL
 
-#define UNICODE_SELECTED_MODES UC_WINC // use Windows unicode handler
+#define UNICODE_SELECTED_MODES UNICODE_MODE_WINCOMPOSE // use Windows unicode handler
 
 #define COMBO_COUNT 19
 #define COMBO_TERM 50

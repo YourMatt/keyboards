@@ -302,14 +302,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        ├───────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴─┬─────┴───────┤
        │         │       │       │       │       │       │ Left  │ Down  │  Up   │ Right │       │             │
        ├─────────┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬─────────┤
-       │             │       │       │       │       │       │LeftWrd│ PgDn  │ PgUp  │RghtWrd│       │         │
+       │             │       │       │       │       │ Home  │LeftWrd│ PgDn  │ PgUp  │RghtWrd│  End  │         │
        ╰─────────┬───┴───┬───┴─────┬─┴───────┼───────┴─────┬─┴───────┴───┬───┴─────┬─┴───────┼───────┼─────────╯
                  │       │         │         │ ░░░░░░░░░░░ │    Caps     │         │         │       │
                  ╰───────┴─────────┴─────────┴─────────────┴─────────────┴─────────┴─────────┴───────╯        */
     [L_4] = LAYOUT(
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_MINUS, KC_UNDERSCORE, KC_PLUS, KC_EQUAL, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, LCTL(KC_LEFT), KC_PGDN, KC_PGUP, LCTL(KC_RIGHT), KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_HOME, LCTL(KC_LEFT), KC_PGDN, KC_PGUP, LCTL(KC_RIGHT), KC_END, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_CAPS_LOCK, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
     )
 
