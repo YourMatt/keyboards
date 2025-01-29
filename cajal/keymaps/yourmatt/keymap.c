@@ -7,9 +7,6 @@
 *
 ***********************************************************************************************************************/
 
-// activates custom code added to QMK rgblight.c to lower LED brightness on those close to the edge of the case
-#define RGBLIGHT_CAJAL
-
 #include QMK_KEYBOARD_H
 #include "strings.c"
 
@@ -21,10 +18,9 @@
 
     - Keymap
         - Attempt L3 combo keys for clockwise and counter-clockwise icons
-        - Consider bottom left keys together as Home - More for muscle memory from old keyboard
     - Macros
-        - Move to be under shift on layer 2 if tap - Keep shift if held
         - Set record tap to stop record if already recording
+        - Add macro 2 support when shift is held
     - Underglow
         - Set glow state for right-shift - Not working likely due to use MT with mod_rsft - Explanation is that
           process_record_user is not called for mod-tap and instead uses register_code directly - May not be able to fix
@@ -35,9 +31,6 @@
         - Add pre-recorded macros for layer 3 under right hand
     - Encoder
         - Decide what to do with layers 3 and 4
-    - Subscript numbers
-        - Use Fn-LCtrl to match JD45, but make so that it works when ctrl is held and make the CSV macro work on tap
-          For some reason, MT(ctrl, macro) isn't working (may be related to issue with underglow right shift)
 
    RANDOM NOTES:
     - Add process_record_kb function to see if this can trap unicode.
@@ -280,8 +273,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_1] = LAYOUT_stagger(
         KC_GRAVE, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINUS, KC_EQUAL, KC_TRNS,
         KC_TRNS, CKC_MACRO_LIST_TO_CSV, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_4, KC_5, KC_6, KC_QUOTE, KC_TRNS,
-        KC_TRNS, QK_DYNAMIC_MACRO_RECORD_START_1, QK_DYNAMIC_MACRO_RECORD_START_2, QK_DYNAMIC_MACRO_RECORD_STOP, KC_TRNS, KC_TRNS, KC_TRNS, KC_1, KC_2, KC_3, KC_BACKSLASH, KC_PGUP,
-        KC_TRNS, QK_DYNAMIC_MACRO_PLAY_1, QK_DYNAMIC_MACRO_PLAY_2, KC_INSERT, KC_TAB, KC_0, OSL(L_3), KC_HOME, KC_PGDN, KC_END
+        KC_TRNS, DM_REC1, DM_RSTP, DM_PLY1, KC_TRNS, KC_TRNS, KC_TRNS, KC_1, KC_2, KC_3, KC_BACKSLASH, KC_PGUP,
+        KC_TRNS, KC_HOME, KC_TRNS, KC_INSERT, KC_TAB, KC_0, OSL(L_3), KC_HOME, KC_PGDN, KC_END
     ),
 
     [L_2] = LAYOUT_stagger(
@@ -627,13 +620,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
 
             return true;
-        case QK_DYNAMIC_MACRO_RECORD_START_1:
+        case DM_REC1:
             rgblight_set_layer_state(GI_MACRO1, 1);
             return true;
-        case QK_DYNAMIC_MACRO_RECORD_START_2:
+        case DM_REC2:
             rgblight_set_layer_state(GI_MACRO2, 1);
             return true;
-        case QK_DYNAMIC_MACRO_RECORD_STOP:
+        case DM_RSTP:
             rgblight_set_layer_state(GI_MACRO1, 0);
             rgblight_set_layer_state(GI_MACRO2, 0);
             return true;
