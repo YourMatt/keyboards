@@ -279,7 +279,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [L_1] = LAYOUT_stagger(
         KC_GRAVE, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINUS, KC_EQUAL, KC_TRNS,
-        CKC_MACRO_LIST_TO_CSV, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_4, KC_5, KC_6, KC_QUOTE, KC_TRNS,
+        KC_TRNS, CKC_MACRO_LIST_TO_CSV, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_4, KC_5, KC_6, KC_QUOTE, KC_TRNS,
         KC_TRNS, QK_DYNAMIC_MACRO_RECORD_START_1, QK_DYNAMIC_MACRO_RECORD_START_2, QK_DYNAMIC_MACRO_RECORD_STOP, KC_TRNS, KC_TRNS, KC_TRNS, KC_1, KC_2, KC_3, KC_BACKSLASH, KC_PGUP,
         KC_TRNS, QK_DYNAMIC_MACRO_PLAY_1, QK_DYNAMIC_MACRO_PLAY_2, KC_INSERT, KC_TAB, KC_0, OSL(L_3), KC_HOME, KC_PGDN, KC_END
     ),
@@ -721,7 +721,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         // custom keycodes
         case CKC_PASS:
             if (record->event.pressed) {
-                SEND_STRING(PASSWORD1);
+                if (H_SHIFT) { SEND_STRING(PASSWORD2); return false; }
+                else { SEND_STRING(PASSWORD1); return false; }
             }
             return true;
         case CKC_MACRO_LIST_TO_CSV:
