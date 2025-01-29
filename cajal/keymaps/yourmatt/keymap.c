@@ -3,6 +3,7 @@
 *   YOURMATT: Cajal Mapping
 *   qmk compile -kb yourmatt/cajal -km yourmatt
 *   Enter DFU by: Fn1 + Fn2, then press knob
+*             or: hold space and esc while plugging in
 *
 ***********************************************************************************************************************/
 
@@ -14,7 +15,6 @@
 
 /* TODO:
 
-    No-reach -_+=
     Fancy zone select: Win Shift `
     Remove Ctrl Space for caps and replace with left space + right space
     Fix subscript numbers by using fn-ctl instead of fn-alt
@@ -35,6 +35,9 @@
         - Add pre-recorded macros for layer 3 under right hand
     - Encoder
         - Decide what to do with layers 3 and 4
+    - Subscript numbers
+        - Use Fn-LCtrl to match JD45, but make so that it works when ctrl is held and make the CSV macro work on tap
+          For some reason, MT(ctrl, macro) isn't working (may be related to issue with underglow right shift)
 
    RANDOM NOTES:
     - Add process_record_kb function to see if this can trap unicode.
@@ -289,17 +292,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [L_3] = LAYOUT_stagger(
-        U_SKULL, U_STAR_FILLED, U_STAR_OUTLINE, KC_TRNS, U_REG, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, U_DIVIDE, U_TRIANGLE_UP, U_PLUSMINUS, QK_REBOOT,
-        U_E_EYEROLL, U_INTERROBANG, KC_TRNS, U_DEGREE, U_CENTS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, U_TRIANGLE_LEFT, U_TRIANGLE_RIGHT,
-        U_E_THINK, KC_TRNS, U_TIMES, U_COPY, U_CHECKMARK, U_BULLET, KC_TRNS, U_MICRO, U_ELLIPSIS_VERT, U_ELLIPSIS, U_TRIANGLE_DOWN, U_ARROW_UP,
-        KC_TRNS, U_E_KISS, U_E_LOVE, U_E_JOY, U_E_SMILE, U_E_ROFL, KC_TRNS, U_ARROW_LEFT, U_ARROW_DOWN, U_ARROW_RIGHT
+        UC(U_SKULL), UC(U_STAR_FILLED), UC(U_STAR_OUTLINE), KC_TRNS, UC(U_REG), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, UC(U_DIVIDE), UC(U_TRIANGLE_UP), U_PLUSMINUS, QK_BOOTLOADER,
+        UC(U_E_EYEROLL), UC(U_INTERROBANG), KC_TRNS, UC(U_DEGREE), UC(U_CENTS), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, UC(U_TRIANGLE_LEFT), UC(U_TRIANGLE_RIGHT),
+        UC(U_E_THINK), KC_TRNS, UC(U_TIMES), UC(U_COPY), UC(U_CHECKMARK), UC(U_BULLET), KC_TRNS, UC(U_MICRO), UC(U_ELLIPSIS_VERT), UC(U_ELLIPSIS), UC(U_TRIANGLE_DOWN), UC(U_ARROW_UP),
+        KC_TRNS, UC(U_E_KISS), UC(U_E_LOVE), UC(U_E_JOY), UC(U_E_SMILE), UC(U_E_ROFL), KC_TRNS, UC(U_ARROW_LEFT), UC(U_ARROW_DOWN), UC(U_ARROW_RIGHT)
     ),
 
     [L_4] = LAYOUT_stagger(
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, LCTL(KC_LEFT), KC_PGDN, KC_PGUP, LCTL(KC_RIGHT), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_MINUS, KC_UNDERSCORE, KC_PLUS, KC_EQUAL, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_HOME, LCTL(KC_END), LCTL(KC_HOME), KC_END, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_HOME, LCTL(KC_LEFT), KC_PGDN, KC_PGUP, LCTL(KC_RIGHT), KC_END, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_CAPS_LOCK, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
     )
 
 };
@@ -614,9 +617,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return true;
         case KC_SPC:
 
+
             // set caps lock for ctrl+space
             if (record->event.pressed) {
-                if (KC_LEFT_CTRL) {
+                if (H_LCTRL) {
                     register_code(KC_CAPS_LOCK);
                     return false;
                 }
@@ -631,76 +635,79 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return true;
         case QK_DYNAMIC_MACRO_RECORD_STOP:
             rgblight_set_layer_state(GI_MACRO1, 0);
-            rgblight_set_layer_state(GI_MACRO1, 0);
+            rgblight_set_layer_state(GI_MACRO2, 0);
             return true;
 
         // set super and subscript for all numbers
         case KC_1:
             if (record->event.pressed) {
                 if (H_SHIFT) { send_unicode_string("¹"); return false; }
-                else if (H_L1_ALT) { send_unicode_string("₁"); return false; }
+                else if (H_LCTRL) { send_unicode_string("₁"); return false; }
             }
             return true;
         case KC_2:
             if (record->event.pressed) {
                 if (H_SHIFT) { send_unicode_string("²"); return false; }
-                else if (H_L1_ALT) { send_unicode_string("₂"); return false; }
+                else if (H_LCTRL) { send_unicode_string("₂"); return false; }
             }
             return true;
         case KC_3:
             if (record->event.pressed) {
                 if (H_SHIFT) { send_unicode_string("³"); return false; }
-                else if (H_L1_ALT) { send_unicode_string("₃"); return false; }
+                else if (H_LCTRL) { send_unicode_string("₃"); return false; }
             }
             return true;
         case KC_4:
             if (record->event.pressed) {
                 if (H_SHIFT) { send_unicode_string("⁴"); return false; }
-                else if (H_L1_ALT) { send_unicode_string("₄"); return false; }
+                else if (H_LCTRL) { send_unicode_string("₄"); return false; }
             }
             return true;
         case KC_5:
             if (record->event.pressed) {
                 if (H_SHIFT) { send_unicode_string("⁵"); return false; }
-                else if (H_L1_ALT) { send_unicode_string("₅"); return false; }
+                else if (H_LCTRL) { send_unicode_string("₅"); return false; }
             }
             return true;
         case KC_6:
             if (record->event.pressed) {
                 if (H_SHIFT) { send_unicode_string("⁶"); return false; }
-                else if (H_L1_ALT) { send_unicode_string("₆"); return false; }
+                else if (H_LCTRL) { send_unicode_string("₆"); return false; }
             }
             return true;
         case KC_7:
             if (record->event.pressed) {
                 if (H_SHIFT) { send_unicode_string("⁷"); return false; }
-                else if (H_L1_ALT) { send_unicode_string("₇"); return false; }
+                else if (H_LCTRL) { send_unicode_string("₇"); return false; }
             }
             return true;
         case KC_8:
             if (record->event.pressed) {
                 if (H_SHIFT) { send_unicode_string("⁸"); return false; }
-                else if (H_L1_ALT) { send_unicode_string("₈"); return false; }
+                else if (H_LCTRL) { send_unicode_string("₈"); return false; }
             }
             return true;
         case KC_9:
             if (record->event.pressed) {
                 if (H_SHIFT) { send_unicode_string("⁹"); return false; }
-                else if (H_L1_ALT) { send_unicode_string("₉"); return false; }
+                else if (H_LCTRL) { send_unicode_string("₉"); return false; }
             }
             return true;
         case KC_0:
             if (record->event.pressed) {
                 if (H_SHIFT) { send_unicode_string("⁰"); return false; }
-                else if (H_L1_ALT) { send_unicode_string("₀"); return false; }
+                else if (H_LCTRL) { send_unicode_string("₀"); return false; }
             }
             return true;
         case KC_BACKSLASH:
-            if (record->event.pressed && H_L1_ALT) { send_unicode_string("⁄"); return false; }
+            if (record->event.pressed && H_LCTRL) { send_unicode_string("⁄"); return false; }
             return true;
 
         // dfu
-        case QK_REBOOT:
+        case QK_BOOTLOADER:
+            // TODO: Fix this. It doesn't fire with QK_BOOTLOADER. It does with QK_REBOOT, which is what I was using
+            //       with QMK013. That no longer puts it into bootloader mode though. Try making a reboot then call
+            //       bootloader.
 
             // turn off all layer lights
             rgblight_set_layer_state(GI_FN1, 0);
@@ -746,6 +753,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 void keyboard_post_init_user(void) {
 
+    set_unicode_input_mode(UNICODE_MODE_WINCOMPOSE);
     rgblight_layers = glow_layers;
     rgblight_set_layer_state(GI_FN1, 0); // refresh glow state - was turning on green lights on right edge when coming out of DFU
 

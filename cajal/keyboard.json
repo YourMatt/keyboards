@@ -10,7 +10,7 @@
     },
     "features": {
         "bootmagic": true,
-        "command": false,
+        "command": true,
         "console": false,
         "encoder": true,
         "extrakey": true,
@@ -18,7 +18,7 @@
         "nkro": true,
         "rgblight": true,
         "unicodemap": true,
-        "dynamicmacro": true,
+        "dynamic_macro": true,
         "combo": true
     },
     "qmk": {
@@ -44,6 +44,11 @@
         "layers": {
             "enabled": true
         },
+        "default": {
+            "on": true,
+            "hue": 0,
+            "val": 0
+        },
         "animations": {
             "breathing": false,
             "rainbow_mood": false,
@@ -56,6 +61,9 @@
             "alternating": false,
             "twinkle": false
         }
+    },
+    "combo": {
+        "term": 50
     },
     "ws2812": {
         "pin": "F7"

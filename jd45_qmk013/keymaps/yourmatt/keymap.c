@@ -290,10 +290,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                  │       │   😘    │   😍    │     😂     │      😀     │    ↓    │   🤣    │       │
                  ╰───────┴─────────┴─────────┴─────────────┴─────────────┴─────────┴─────────┴───────╯        */
     [L_3] = LAYOUT(
-        UC(U_SKULL), UC(U_STAR_FILLED), UC(U_STAR_OUTLINE), KC_TRNS, UC(U_REG), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, UC(U_DIVIDE), UC(U_TRIANGLE_UP), UC(U_PLUSMINUS),
-        UC(U_E_EYEROLL), UC(U_INTERROBANG), KC_TRNS, UC(U_DEGREE), UC(U_CENTS), KC_TRNS, KC_TRNS, KC_TRNS, UC(U_ARROW_UP), KC_TRNS, UC(U_TRIANGLE_LEFT), UC(U_TRIANGLE_RIGHT),
-        UC(U_E_THINK), KC_TRNS, UC(U_TIMES), UC(U_COPY), UC(U_CHECKMARK), UC(U_BULLET), KC_TRNS, UC(U_ARROW_LEFT), UC(U_ARROW_RIGHT), UC(U_ELLIPSIS), UC(U_TRIANGLE_DOWN), UC(U_ELLIPSIS_VERT),
-        KC_TRNS, KC_TRNS, UC(U_E_KISS), UC(U_E_LOVE), UC(U_E_JOY), UC(U_E_SMILE), UC(U_ARROW_DOWN), UC(U_E_ROFL), KC_TRNS, KC_TRNS
+        X(U_SKULL), X(U_STAR_FILLED), X(U_STAR_OUTLINE), KC_TRNS, X(U_REG), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, X(U_DIVIDE), X(U_TRIANGLE_UP), X(U_PLUSMINUS),
+        X(U_E_EYEROLL), X(U_INTERROBANG), KC_TRNS, X(U_DEGREE), X(U_CENTS), KC_TRNS, KC_TRNS, KC_TRNS, X(U_ARROW_UP), KC_TRNS, X(U_TRIANGLE_LEFT), X(U_TRIANGLE_RIGHT),
+        X(U_E_THINK), KC_TRNS, X(U_TIMES), X(U_COPY), X(U_CHECKMARK), X(U_BULLET), KC_TRNS, X(U_ARROW_LEFT), X(U_ARROW_RIGHT), X(U_ELLIPSIS), X(U_TRIANGLE_DOWN), X(U_ELLIPSIS_VERT),
+        KC_TRNS, KC_TRNS, X(U_E_KISS), X(U_E_LOVE), X(U_E_JOY), X(U_E_SMILE), X(U_ARROW_DOWN), X(U_E_ROFL), KC_TRNS, KC_TRNS
     ),
 
     /* LAYER 4 - HOLDING LEFT SPACEBAR
@@ -448,9 +448,4 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return true;
 
     }
-}
-
-void matrix_init_user(void)
-{
-    set_unicode_input_mode(UNICODE_MODE_WINCOMPOSE);
 }
