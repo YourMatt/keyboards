@@ -65,6 +65,10 @@
     "combo": {
         "term": 50
     },
+    "debounce": 5,
+    "tapping": {
+        "term": 100
+    },
     "ws2812": {
         "pin": "F7"
     },

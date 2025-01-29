@@ -35,6 +35,13 @@
   "backlight": {
     "pin": "B7"
   },
+  "combo": {
+    "term": 50
+  },
+  "debounce": 5,
+  "tapping": {
+    "term": 100
+  },
   "processor": "atmega32u4",
   "bootloader": "atmel-dfu",
   "layouts": {
