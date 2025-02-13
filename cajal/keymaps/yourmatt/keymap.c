@@ -266,7 +266,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_DEFAULT] = LAYOUT_stagger(
         KC_ESC, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LEFT_BRACKET, KC_RIGHT_BRACKET, RGB_TOG,
         KC_LEFT_CTRL, KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SEMICOLON, KC_ENT,
-        KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, MT(MOD_RSFT, KC_SLASH), KC_UP,
+        KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, RSFT_T(KC_SLASH), KC_UP,
         MO(L_1), KC_LALT, KC_LGUI, LT(L_4, KC_BACKSPACE), KC_SPACE, KC_RALT, MO(L_2), KC_LEFT, KC_DOWN, KC_RIGHT
     ),
 
@@ -737,6 +737,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
+
+/***********************************************************************************************************************
+*
+*   VARIABLE TAPPING TERM
+*
+***********************************************************************************************************************/
+
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case RSFT_T(KC_SLASH):
+            return 75;
+        default:
+            return TAPPING_TERM;
+    }
+}
 
 
 /***********************************************************************************************************************

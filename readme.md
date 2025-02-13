@@ -26,9 +26,17 @@ qmk compile -kb yourmatt/foldername -km yourmatt
 
 # Resources
 
-https://docs.qmk.fm/
-https://jayliu50.github.io/qmk-cheatsheet/
-https://github.com/samhocevar/wincompose/releases
+QMK Docs:
+    https://docs.qmk.fm/
+
+QMK JSON Format:
+    https://docs.qmk.fm/reference_info_json#info-json-reference
+
+Cheat Sheet:
+    https://jayliu50.github.io/qmk-cheatsheet/
+
+WinCompose:
+    https://github.com/samhocevar/wincompose/releases
 
 
 # Cajal Underglow Adjustment

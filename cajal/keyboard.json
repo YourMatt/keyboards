@@ -67,7 +67,8 @@
     },
     "debounce": 5,
     "tapping": {
-        "term": 100
+        "term": 200,
+        "term_per_key": true
     },
     "ws2812": {
         "pin": "F7"
